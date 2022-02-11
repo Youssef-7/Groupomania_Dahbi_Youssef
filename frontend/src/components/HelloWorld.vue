@@ -1,0 +1,166 @@
+<template>
+<div class="blocMedia">
+            <div class="socialTitle">
+                <h1>Groupomania</h1>
+            </div>
+            <div id="formBloc">
+                <form method="POST" action="/api/signup">
+                    <input v-model = "front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
+                    <input v-model = "front_email" placeholder="Adresse e-mail">
+                    <input v-model = "front_password" placeholder="Mot de passe">
+                    <button id="btnConect" v-if = "mode == 'login'" @click="btnConect" >Se connecter</button>
+                    <button v-else id="btnSignUp" @click="btnSignUp">Creer un compte</button>
+                    <a v-if = "mode == 'create'" @click="connectAccount" href="#"><p>Se connecter</p></a>
+                    <a href="#"><p>Mot de passe oublié ?</p></a>
+                    <a v-if = "mode == 'login'" @click="createAccount" href="#"><p>Creer un compte</p></a>
+                    <div id="trait"></div>
+                    <router-link to="/about">Page suivante</router-link>
+                </form>  
+            </div>
+        </div>
+</template>
+
+<script>
+import axios from "axios";
+export default {
+  name: 'HelloWorld',
+    data() {
+    return {
+      mode : "login",
+      front_pseudo :"",
+      front_email : "",
+      front_password: "",
+    };
+  },
+ methods: {
+    connectAccount(){
+        this.mode = "login";
+    },
+    createAccount(){
+        this.mode = "create";
+    },
+ async btnSignUp() {
+      try {
+// localhost:3000/api/auth", {
+        await axios.post("http://localhost:3000/api/signup",{ 
+          u_pseudo : this.front_pseudo,
+          u_email : this.front_email,
+          u_pwd: this.front_password,
+        });
+        this.front_pseudo = "";
+        this.front_email= "";
+        this.front_password = "";
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    }
+}
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+body{
+    margin : 0px;
+    padding: 0px;
+    margin: 0px;
+    background-color: #FBF9FF;
+}
+a{ 
+text-decoration: none; }
+
+h1{
+    margin-top: 50px;
+    margin-right: 50px;
+    font-family: "Dancing Script" ;
+    font-size: 50px;
+    color: #7FB49F;
+    letter-spacing: .15em;
+    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC;
+}
+.blocMedia{
+ width: 700px;
+ margin: 200px auto;
+ display: flex;
+ justify-content: space-between;
+}
+.socialTitle {
+    margin-right: 30px;
+}
+
+#formBloc{
+    background-color: white;
+    width: 400px;
+    margin: auto;
+    padding: 0 15px 10px;
+    border-radius: 20px;
+    box-shadow: 20px 10px 5px 3px rgba(0,0,0,0.23);
+}
+form p {
+    color: #90E795;
+    margin-top: 7px;
+    margin-bottom: 15px;
+    margin-left: 122px;
+    font-weight: bold;
+    font-style: italic;
+}
+form p:hover{
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#trait{
+    height: 1px;
+    opacity: 0.5;
+    width: 80%;
+    background-color: #B5B5B5;
+    margin: 2px auto;
+    margin-bottom: 15px;
+    
+}
+#btnConect {
+    border: none;
+    width: 350px;
+    padding: 15px 10px;
+    margin: 10px 0px 0px 12px;
+    border-radius: 8px;
+    background-color:#BCFCC1;
+    color: #424242;
+    font-weight: bold;
+}
+#btnConect:hover{
+    background-color: #90E795;
+    color: white;
+    cursor: pointer;
+    transition: 0.7s ease-in-out;
+}
+#btnSignUp{
+    border: none;
+    width: 250px;
+    padding: 15px 10px;
+    margin: 10px 0px auto 18%; 
+    border-radius: 8px;
+    font-weight: bold;
+    background-color:#FBEAA2;
+    color: #424242;
+
+}
+#btnSignUp:hover{
+    background-color: #FACC8E;
+    color: white;
+    cursor: pointer;
+    transition: 0.7s ease-in-out;
+}
+input {
+    border: none;
+    width: 350px;
+    padding: 15px 10px;
+    margin: 10px 0px;
+    border-radius: 8px;
+    border: solid 1px #E5E6E4;
+}
+
+
+</style>
+
