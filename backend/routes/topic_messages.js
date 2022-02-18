@@ -34,7 +34,7 @@ router.put('/topic_messages', auth, multer, topic_messagesCtrl.updateMessage);
 router.put('/topic_messages/moderation', auth, topic_messagesCtrl.updateModeration);
 
 // Delete Message from Database
-router.delete('/topic_messages/:tm_id', auth, topic_messagesCtrl.deleteMessage);
+router.delete('/topic_messages/:p_id', auth, topic_messagesCtrl.deleteMessage);
 
 // Get message by title
 // router.get('/topic_messages', auth, topic_messagesCtrl.showMessageByTitle);
