@@ -3,7 +3,9 @@ const topicMessages = require("../models/topic_messageModel.js");
 // Créer un message (parent 0) : INSERT Topic_message to Database
 exports.createMessage = (req, res) => {
     // console.log(req);
-    const data = JSON.parse(req.body.topic); // JSON.parse(req.body.message)
+
+    const data = JSON.parse(req.body.topic);
+ // JSON.parse(req.body.message)
     data['picture_url'] = req.hasOwnProperty('file') ? req.file.path : null;
     topicMessages.insertTopicMessages(data, (err, results) => {
         if (err){res.send(err);} 

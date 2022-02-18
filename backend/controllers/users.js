@@ -27,7 +27,7 @@ exports.updateUser = (req, res) => {
  
 // Delete User
 exports.deleteUser = (req, res) => {
-    const id = req.params.u_id;
+    const id = req.params.user_id;
     message.deleteTopicByUserId(id, (err, results) => {
         if (err){ res.send(err); }
         else {
