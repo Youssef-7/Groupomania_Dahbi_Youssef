@@ -4,7 +4,7 @@
                 <h1>Groupomania</h1>
             </div>
             <div id="formBloc">
-                <form method="POST" action="/api/signup">
+                <form>
                     <input v-model = "front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
                     <input v-model = "front_email" placeholder="Adresse e-mail">
                     <input v-model = "front_password" placeholder="Mot de passe">
@@ -39,15 +39,13 @@ export default {
     createAccount(){
         this.mode = "create";
     },
- async btnSignUp() {
+ async btnConect() {
       try {
 // localhost:3000/api/auth", {
-        await axios.post("http://localhost:3000/api/signup",{ 
-          u_pseudo : this.front_pseudo,
+        await axios.post("http://localhost:3000/api/login",{ 
           u_email : this.front_email,
           u_pwd: this.front_password,
         });
-        this.front_pseudo = "";
         this.front_email= "";
         this.front_password = "";
       } catch (err) {
