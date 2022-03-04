@@ -7,7 +7,7 @@ const db_queries = require("../util/db_queries.js");
 
 // Insert Topic_message to Database = création d'un message
 exports.insertTopicMessages = (data, result) => {
-    connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url, p_moderation) VALUES (?, ?, ?, ?, ?, ?)", [data.tm_parent, data.user_id, data.title, data.content, data.picture_url, data.moderation], (err, results) => {
+    connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url) VALUES (?, ?, ?, ?, ?)", [data.front_parent, data.front_user_id, data.front_title, data.front_content, data.front_picture_url], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else {
             db_queries.get_message_by_id(results.insertId, (err, res) => {
@@ -28,7 +28,7 @@ exports.getParentMessages = (result) => {
 
 // Get Child Topics = trouver tous les messages dont le parent = 0
 exports.getChildMessages = (parent_id, result) => {
-    connection.query("SELECT p.*, u.u_pseudo FROM post_messages p INNER JOIN usagers u ON p.p_user_id = u.u_id WHERE p.p_parent = ? ORDER BY p_date_published", [parent_id], (err, results) => {
+    connection.query("SELECT p.*, u.u_pseudo FROM post_messages p INNER JOIN usagers u ON p.p_user_id = u.u_id WHERE p.p_parent = ? ORDER BY p_date_published", [front_parent], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else { result(null, results); }
     });
@@ -36,8 +36,8 @@ exports.getChildMessages = (parent_id, result) => {
 
 // Update Topic_message to Database = modifier un message
 exports.updateMessage = (data, result) => {
-    if (data.tm_picture_url) { // si on update l'image depuis le DOM
-        db_queries.get_picture_url_by_tm_id(data.tm_id, (err, results) => { // appel de la querie de ../utils/db_queries
+    if (data.front_picture_url) { // si on update l'image depuis le DOM
+        db_queries.get_picture_url_by_tm_id(data.front_p_id, (err, results) => { // appel de la querie de ../utils/db_queries
             console.log(results) // vérif des résultats
             if (err) { result(err, null); }
             else {
@@ -52,11 +52,11 @@ exports.updateMessage = (data, result) => {
                     }
                 } // puis on met à jour la base de données en insérant une nouvelle image
                 connection.query("UPDATE post_messages SET p_titre  = ?, p_text  = ?, p_image_url  = ? WHERE p_id  = ?",
-                    [data.title, data.content, data.tm_picture_url, data.tm_id], (err, results) => {
+                    [data.front_title, data.front_content, data.front_picture_url, data.front_p_id], (err, results) => {
                     if (err) { console.log("error: ", err); result(err, null); }
                     else {
                         connection.query("UPDATE post_messages  SET p_titre  = ? WHERE p_parent  = ?",
-                            [data.title, data.tm_id], (err, results) => {
+                            [data.front_title, data.front_p_id], (err, results) => {
                             if (err) { console.log("error: ", err); result(err, null); }
                             else {
                                 result(null, results);
@@ -68,11 +68,11 @@ exports.updateMessage = (data, result) => {
         })
     } else { // gestion si on update pas l'image
         connection.query("UPDATE post_messages  SET p_titre  = ?, p_text  = ? WHERE p_id  = ?", // MAJ de la BDD (titre et contenu du message) selon l'ID du message
-            [data.title, data.content, data.tm_id], (err, results) => {
+            [data.front_title, data.front_content, data.front_p_id], (err, results) => {
             if (err) { console.log("error: ", err); result(err, null); }
             else {
                 connection.query("UPDATE post_messages SET p_titre  = ? WHERE p_parent  = ?",
-                    [data.title, data.tm_id], (err, results) => {
+                    [data.front_title, data.front_p_id], (err, results) => {
                     if (err) { console.log("error: ", err); result(err, null); }
                     else {
                         result(null, results);
@@ -147,7 +147,7 @@ exports.deleteMessageById = (id, result) => {
 
 // Moderation Message avec UPDATE
 exports.moderateMessage = (data, result) => {
-    connection.query("UPDATE post_messages  SET p_moderation = ? WHERE p_id = ?", [data.tm_moderation, data.tm_id], (err, results) => {
+    connection.query("UPDATE post_messages  SET p_moderation = ? WHERE p_id = ?", [data.front_moderation, data.front_p_id], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else { result(null, results); }
     });
