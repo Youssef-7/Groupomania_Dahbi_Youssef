@@ -1,7 +1,7 @@
 <template>
 <div class="blocMedia">
             <div class="socialTitle">
-                <h1>Groupomania</h1>
+                <img src="../assets/icon-left-font.png">
             </div>
             <div id="formBloc">
                 <form>
@@ -52,6 +52,21 @@ export default {
         console.log(err);
       }
     },
+     async btnSignUp() {
+      try {
+// localhost:3000/api/auth", {
+        await axios.post("http://localhost:3000/api/signup",{
+           u_pseudo: this.front_pseudo, 
+          u_email : this.front_email,
+          u_pwd: this.front_password,
+        });
+        this.front_pseudo ="";
+        this.front_email = "";
+        this.front_password = "";
+      } catch (err) {
+        console.log(err);
+      }
+    }
     }
 }
 </script>
@@ -68,14 +83,9 @@ body{
 a{ 
 text-decoration: none; }
 
-h1{
-    margin-top: 50px;
-    margin-right: 50px;
-    font-family: "Dancing Script" ;
-    font-size: 50px;
-    color: #7FB49F;
-    letter-spacing: .15em;
-    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC;
+.bgImage{
+    background: url(../assets/logo.png);
+    position: relative;
 }
 .blocMedia{
  width: 700px;
@@ -85,8 +95,14 @@ h1{
 }
 .socialTitle {
     margin-right: 30px;
+    width: 300px;
+   
 }
-
+.socialTitle img{
+   object-fit: cover;
+    width: 300px;
+   
+}
 #formBloc{
     background-color: white;
     width: 400px;
