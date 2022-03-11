@@ -1,59 +1,45 @@
 <template>
-    <header>
+<body>
+<div class="container">
+   <header>
       <nav>
-        <div class="navBar">
+       <div class="navBar">
             <div class="socialTitle">
-              <h1>Groupomania</h1>
+                <img src="../assets/icon-left-font.png">
             </div>
             <div class="searchBar">
               <div class="search">
                 <button type="submit" class="searchButton">
-                 <i class="fa fa-search"></i>
+                 <fa icon="search"/>
                 </button>
                 <input type="text" class="searchTerm" placeholder="Rechercher">
             </div>
             </div>
-            <div class="userButton">
-                <button type="submit" class="profilButton">
-                <i class="fas fa-user"></i>
-                <i class="fas fa-chevron-down"></i>
+            <div class="userButton dropdown" >
+                <button type="submit" class="profilButton boutonmenuprincipal">
+                <fa icon ="user"/>
+                <fa icon ="chevron-down"/>
                 </button>
+                <div class="dropdown-child">
+                 <a href="/books">Mon profil</a>
+                 <a href="#">
+                  <form method="POST" action="/logout">
+                    <button type="submit" class="btn btn-primary">Log out</button>
+                </form>
+                </a>
+                </div>  
             </div>   
         </div>
       </nav>
     </header>
-    <section id="profilTop">
-    <section id="fondProfil">
-      <div class="fondProfil">
-        <img src="https://ih1.redbubble.net/image.692961833.0267/fposter,small,wall_texture,product,750x1000.jpg">
-      </div>
-      <div class="fotoProfil">
-        <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
-      </div>
-    </section>
-    <div class="name">
-      <h1>Chuck Norris</h1>
-    </div>
-    </section>
-    <section id="buttonModif">
-      <div>
-      <i class="far fa-edit"></i>
-      <span>Modifier le profil</span>
-      </div>
-    </section>
-    <section id="toolBar">
-      <div class="BarPublications"><span>Publiations</span></div>
-      <div ><span>A propos</span></div>
-      <div><span>Amis</span></div>
-      <div class="Photos"><span>Photos</span></div> 
-    </section>
-    <section id="statut">
+    <div class="alert alert-danger" role="alert"></div>
+    <section id="sectionPublication">
       <div class="publication">
         <form action="/books/add" method="post">
-          <input  name="p_titre" class="createPost" value="<%= p_titre %>" placeholder="Titre de la publication" type="text">
-          <textarea name="p_text" class="createPost" value="<%= p_text %>" placeholder="Quoi de neuf ?"></textarea> 
+          <input  name="p_titre" class="createPost" value="" placeholder="Titre de la publication" type="text">
+          <input name="p_text" class="createPost" value="" placeholder="Quoi de neuf ?" type="text">
           <input type="hidden" id="p_parent" name="p_parent" value="<%= 0 %>" >
-          <input type="hidden" id="p_user_id" name="p_user_id" value="<%=59%>">
+          <input type="hidden" id="p_user_id" name="p_user_id" value="<%= 59 %>">
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
         </div>
@@ -63,47 +49,22 @@
         </form>
       </div>
     </section>
-    <section id= monProfil>
-      <div id="userInformation">
-        <div class="myPicture">
-          <div><h1>Photos</h1></div>
-          <div class="pictureList">
-            <div class="pictureShow"><img src="http://www.imcdb.org/i427377.jpg"></div>
-            <div class="pictureShow"><img src="https://media.gettyimages.com/photos/walker-texas-ranger-a-cbs-television-western-chuck-norris-january-1-picture-id1176207312"></div>
-            <div class="pictureShow"><img src="https://i.pinimg.com/originals/6a/eb/1b/6aeb1b391de374c13acaffc160ce5bb8.jpg"></div>
-          </div>
-        </div>
-        <div class="myFriend">
-          <div><h1>Mes amis</h1></div>
-          <div class="friendList">
-            <div class="friendShow"><img src="https://stock.wikimini.org/w/images/4/4d/Bob_l%27%C3%A9ponge-Personnage.jpg"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/mugenpedia/images/f/f8/200px-Patrick_Star.svg.png/revision/latest?cb=20130812201248&path-prefix=fr"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/0/05/Squidward_stock_art.png/revision/latest/top-crop/width/360/height/450?cb=20190801142211&path-prefix=fr"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/4/49/Bob_l%27%C3%A9ponge_Sandy.png/revision/latest/top-crop/width/360/height/450?cb=20170310013502&path-prefix=fr"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/7/7b/Krabs_artwork.png/revision/latest?cb=20190725100918&path-prefix=fr"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://ih1.redbubble.net/image.451320542.1814/raf,750x1000,075,t,FFFFFF:97ab1c12de.u3.jpg"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/f/f7/Bob_l%27%C3%A9ponge_Gary.png/revision/latest?cb=20170310013647&path-prefix=fr"><span>Lorem ipsum</span></div>
-            <div class="friendShow"><img src="https://static.wikia.nocookie.net/spongebob/images/0/05/Larry_the_Lobster_stock_image_standing.png/revision/latest?cb=20191104014514"><span>Lorem ipsum</span></div>
-          </div>
-        </div>
-      </div>
-      <div id="userPublication1">
+    <section id= "allPost">
+    <div class="allPublication">
+      <div class="publicationPost">
         <div class="profilPublication">
-        <div class ="titrePublications">
-          <h1>Mes publications</h1>
-        </div>
         <div class="flexPart2">
         <div class="flexPart1">
             <div class="imgProfilPublicationPart1">
               <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
             </div>
           <div class="profilPublicationPart1">
-            <h1>Chuck Norris</h1>
-            <p></p>
+            <h2>Chuck Norris</h2>
+            <p>07/11/2021</p>
           </div>
         </div>
           <div class="profilPublicationPart2">
-            <div></div>
+           <div><a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../books/delete?p_id=<%=data[i].p_id%>">Delete</a>  </div>
           </div>
         </div>
         <div class="profilPublicationPost">
@@ -126,24 +87,43 @@
             <div class="imgProfilPublicationPart1">
               <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
             </div>
-            <form action="/books/add" method="post">
-              <input type="hidden" id="p_titre" name="p_titre" value="<%= data[i].p_titre %>" >
-              <input type="hidden" id="p_parent" name="p_parent" value="<%= data[i].p_id %>" >
-              <input type="hidden" id="p_user_id" name="p_user_id" value="<%=59%>">
-              <textarea name="p_text" class="createPost" value="<%= p_text %>" placeholder="Quoi de neuf ?"></textarea>
-              <button type="submit" class="sendPublication" value="Add"> Envoyer </button>
-              <!-- mettre un bouton image -->
+            <form>
+              <input name="createPost" class="createPost" placeholder="Ecrivez un commentaire..." type="text">
             </form>
+            <div class="mon commentaire"> mon commentaire</div>
           </div>
-          <div class="mon commentaire"></div>
-        </div>
-        </div>
+       </div>
       </div>
-   </section>
+      </div>
+    </div>
+    <div class="userView">
+      <h2>Utilisateurs connectés</h2>
+    <div class="user">
+        <div class="myFriend">
+          <div class="friendList">
+            <div class="friendShow"><img src="https://stock.wikimini.org/w/images/4/4d/ob_l%27%C3%A9ponge-Personnage.jpg"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/mugenpedia/images/f/f8/200px-Patrick_Star.svg.png/revision/latest?cb=20130812201248&path-prefix=fr"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/0/05/Squidward_stock_art.png/revision/latest/top-crop/width/360/height/450?cb=20190801142211&path-prefix=fr"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/4/49/Bob_l%27%C3%A9ponge_Sandy.png/revision/latest/top-crop/width/360/height/450?cb=20170310013502&path-prefix=fr"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/7/7b/Krabs_artwork.png/revision/latest?cb=20190725100918&path-prefix=fr"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://ih1.redbubble.net/image.451320542.1814/raf,750x1000,075,t,FFFFFF:97ab1c12de.u3.jpg"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/bob-leponge/images/f/f7/Bob_l%27%C3%A9ponge_Gary.png/revision/latest?cb=20170310013647&path-prefix=fr"><span>Lorem ipsum</span></div>
+            <div class="friendShow"><img src="https://static.wikia.nocookie.net/spongebob/images/0/05/Larry_the_Lobster_stock_image_standing.png/revision/latest?cb=20191104014514"><span>Lorem ipsum</span></div>
+          </div>
+        </div>
+    </div>
+    </div>
+    </section>
+    <footer>
+    </footer>
+
+    </div>
+</body>
 </template>
 <style scoped>
-  @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 /*Menu deroulant*/
+
 .boutonmenuprincipal {
 background-color: white;
 border: none;
@@ -178,10 +158,9 @@ display: block;
 }
 /**************************************/
 body{
-    margin : 0px;
-    padding: 0px;
     margin: 0px;
-    background-color: #EFEEEE;
+    padding: 0px;
+    background-color: white;
 }
 a{ 
 text-decoration: none; }
@@ -189,20 +168,22 @@ text-decoration: none; }
     display: flex;
     width: 100%;
     background-color: white;
-    box-shadow: 1px 11px 16px -5px rgba(0,0,0,0.39);
+    box-shadow: 1px 8px 5px -9px rgba(0,0,0,0.39);
     margin: 0;
 
 }
 /*logo*/
-.socialTitle{
-    margin-left: 10px;
-    margin-right: 15%;
+.socialTitle {
+    width: 300px;
+    height: 70px;
+    margin-right: 120px;
+   
 }
-h1{
-    font-family: "Dancing Script" ;
-    color: #7FB49F;
-    letter-spacing: .15em;
-    text-shadow: 1px 0px 1px #CCCCCC, 0px 1px 1px #EEEEEE, 2px 1px 1px #CCCCCC, 1px 2px 1px #EEEEEE, 3px 2px 1px #CCCCCC, 2px 3px 1px #EEEEEE, 4px 3px 1px #CCCCCC, 3px 4px 1px #EEEEEE, 5px 4px 1px #CCCCCC, 4px 5px 1px #EEEEEE, 6px 5px 1px #CCCCCC, 5px 6px 1px #EEEEEE, 7px 6px 1px #CCCCCC;
+.socialTitle img{
+   object-fit: cover;
+    width: 300px;
+    height: 70px;
+   
 }
 /***barre de recherche***/
 /*bloc*/
@@ -277,8 +258,7 @@ form {
     font-size: 14px;
     background-color: #F7F3F3;
     border:1px solid #F3F2F2;
-    border-radius: 10px;
-    margin-bottom: 10px;
+
 }
 /*.sendPics{
     width: 5%;
