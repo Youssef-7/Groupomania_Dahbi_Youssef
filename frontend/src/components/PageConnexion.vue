@@ -26,6 +26,9 @@ export default {
   name: 'HelloWorld',
     data() {
     return {
+      login:{
+          front_pseudo: this.front_pseudo, 
+          front_email: this.front_email},
       mode : "login",
       front_pseudo :"",
       front_email : "",
@@ -39,19 +42,17 @@ export default {
     createAccount(){
         this.mode = "create";
     },
- async btnConect() {
-      try {
-// localhost:3000/api/auth", {
-        await axios.post("http://localhost:3000/api/login",{ 
-          front_email : this.front_email,
-          front_password: this.front_password,
-        });
-        this.front_email= "";
-        this.front_password = "";
-      } catch (err) {
-        console.log(err);
-      }
-    },
+btnConect(){
+        axios.post('http://localhost:3000/api/login', this.login)
+            .then(response => {
+                    const token =  response.data.token;
+                    const userId = response.data.userId;
+                    const level = response.data.level;
+                    localStorage.setItem("access_token", token),
+                    localStorage.setItem("userId", userId),
+                    localStorage.setItem("level", level)
+                });
+            },
      async btnSignUp() {
       try {
 // localhost:3000/api/auth", {

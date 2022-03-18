@@ -33,22 +33,6 @@
       </nav>
     </header>
     <div class="alert alert-danger" role="alert"></div>
-    <section id="sectionPublication">
-      <div class="publication">
-        <form action="/books/add" method="post">
-          <input  name="p_titre" class="createPost" value="" placeholder="Titre de la publication" type="text">
-          <input name="p_text" class="createPost" value="" placeholder="Quoi de neuf ?" type="text">
-          <input type="hidden" id="p_parent" name="p_parent" value="<%= 0 %>" >
-          <input type="hidden" id="p_user_id" name="p_user_id" value="<%= 59 %>">
-        <div class="sendPics">
-          <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
-        </div>
-        <div class="send">
-            <button type="submit" class="sendPublication" value="Add"> Envoyer </button>
-        </div>
-        </form>
-      </div>
-    </section>
     <section id= "allPost">
     <div class="allPublication">
       <div class="publicationPost">
@@ -73,12 +57,23 @@
           <div class="profilPublicationPostImg">
             <img src="http://www.imcdb.org/i427377.jpg">
           </div>
-          <div class="profilPublicationPostInter">
-            <router-link to="/PageCommentaire">Page suivante</router-link>
+          <div class="commentZone">
+            <div class="imgProfilPublicationPart1">
+              <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
+            </div>
+            <form>
+              <input name="createPost" class="createPost" placeholder="Ecrivez un commentaire..." type="text">
+            </form>
+            <div class="mon commentaire"> mon commentaire</div>
           </div>
        </div>
       </div>
       </div>
+    </div>
+    </section>
+    <section id="commentaires">
+    <div class="commentaires">
+        <p>commentaire 1</p>
     </div>
     </section>
     <footer>
@@ -252,7 +247,8 @@ form {
 }
 .allPublication{
     min-height: 400px;
-    width: 600px;
+    margin-top: 60px;
+    width: 800px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -368,6 +364,17 @@ form {
     border-radius: 50%;
     object-fit: cover;
 }
+#commentaires{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 
+}
+.commentaires{
+    min-height: 80px;
+    width: 500px;
+    box-shadow: 0px 0px 8px -2px #B4B4B4;
+    border-radius: 10px;
+}
 
 </style>
