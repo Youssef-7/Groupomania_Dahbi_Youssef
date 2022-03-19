@@ -6,8 +6,8 @@
             <div id="formBloc">
                 <form>
                     <input v-model = "front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
-                    <input v-model = "front_email" placeholder="Adresse e-mail">
-                    <input v-model = "front_password" placeholder="Mot de passe">
+                    <input v-model = "login.front_email" placeholder="Adresse e-mail">
+                    <input v-model = "login.front_password" placeholder="Mot de passe">
                     <button id="btnConect" v-if = "mode == 'login'" @click="btnConect" >Se connecter</button>
                     <button v-else id="btnSignUp" @click="btnSignUp">Creer un compte</button>
                     <a v-if = "mode == 'create'" @click="connectAccount" href="#"><p>Se connecter</p></a>
@@ -27,8 +27,8 @@ export default {
     data() {
     return {
       login:{
-          front_pseudo: this.front_pseudo, 
-          front_email: this.front_email},
+          front_pseudo: "", 
+          front_email: ""},
       mode : "login",
       front_pseudo :"",
       front_email : "",
@@ -51,6 +51,7 @@ btnConect(){
                     localStorage.setItem("access_token", token),
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
+                    console.log(this.login)
                 });
             },
      async btnSignUp() {
