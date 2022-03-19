@@ -5,7 +5,7 @@
             </div>
             <div id="formBloc">
                 <form>
-                    <input v-model = "front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
+                    <input v-model = "login.front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
                     <input v-model = "login.front_email" placeholder="Adresse e-mail">
                     <input v-model = "login.front_password" placeholder="Mot de passe">
                     <button id="btnConect" v-if = "mode == 'login'" @click="btnConect" >Se connecter</button>
@@ -27,6 +27,7 @@ export default {
     data() {
     return {
       login:{
+          front_password:"",
           front_pseudo: "", 
           front_email: ""},
       mode : "login",
@@ -54,21 +55,18 @@ btnConect(){
                     console.log(this.login)
                 });
             },
-     async btnSignUp() {
-      try {
-// localhost:3000/api/auth", {
-        await axios.post("http://localhost:3000/api/signup",{
-           front_pseudo: this.front_pseudo, 
-          front_email: this.front_email,
-          front_password: this.front_password,
-        });
-        this.front_pseudo ="";
-        this.front_email = "";
-        this.front_password = "";
-      } catch (err) {
-        console.log(err);
-      }
-    }
+btnSignUp(){
+        axios.post('http://localhost:3000/api/signup', this.login)
+            .then(response => {
+                    const token =  response.data.token;
+                    const userId = response.data.userId;
+                    const level = response.data.level;
+                    localStorage.setItem("access_token", token),
+                    localStorage.setItem("userId", userId),
+                    localStorage.setItem("level", level)
+                    console.log(this.login)
+                });
+            }
     }
 }
 </script>
