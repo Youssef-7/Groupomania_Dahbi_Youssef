@@ -52,6 +52,7 @@ btnConect(){
                     localStorage.setItem("access_token", token),
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
+                    this.$router.push("/PageAccueil");
                     console.log(this.login)
                 });
             },
