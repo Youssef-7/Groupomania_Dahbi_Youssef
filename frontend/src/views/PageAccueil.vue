@@ -35,16 +35,16 @@
     <div class="alert alert-danger" role="alert"></div>
     <section id="sectionPublication">
       <div class="publication">
-        <form action="/books/add" method="post">
-          <input  name="p_titre" class="createPost" value="" placeholder="Titre de la publication" type="text">
-          <input name="p_text" class="createPost" value="" placeholder="Quoi de neuf ?" type="text">
-          <input type="hidden" id="p_parent" name="p_parent" value="<%= 0 %>" >
-          <input type="hidden" id="p_user_id" name="p_user_id" value="<%= 59 %>">
+        <form>
+          <input v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
+          <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
+          <input v-model="front_parent" type="hidden" id="p_parent" name="front_parent"  >
+          <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
         </div>
         <div class="send">
-            <button type="submit" class="sendPublication" value="Add"> Envoyer </button>
+            <button @click="savePublication" type="submit" class="sendPublication" value="Add"> Envoyer </button>
         </div>
         </form>
       </div>
@@ -52,10 +52,12 @@
     <section id= "allPost">
     <div class="allPublication">
       <div class="publicationPost">
-        <div class="profilPublication">
+        <div class="profilPublication" v-for="item in items" :key="item.u_id">
         <div class="flexPart2">
         <div class="flexPart1">
             <div class="imgProfilPublicationPart1">
+                <h1>{{ item.p_titre }}</h1>
+                <p>{{ item.p_text }}</p>
               <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
             </div>
           <div class="profilPublicationPart1">
@@ -87,6 +89,52 @@
     </div>
 </body>
 </template>
+<script>
+// import axios
+import axios from "axios";
+ 
+export default {
+  data() {
+    return {
+      items: [],
+      front_title: "",
+      front_content: "",
+      front_parent : 0,
+      front_user_id : 64,
+    };
+  },
+created() {
+    this.getProducts();
+  },
+  methods: {
+    async getProducts() {
+      try {
+        const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
+        this.items = response.data;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Create New publication
+    async savePublication() {
+      try {
+        await axios.post("http://localhost:3000/api/topic_messages", {
+          p_titre: this.front_title,
+          p_text: this.front_content,
+          p_parent: this.front_parent,
+          p_user_id :this.front_user_id,
+        });
+        this.front_title = "";
+        this.front_content = "";
+        this.front_parent = "";
+        this.front_user_id ="";
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+};
+</script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 /*Menu deroulant*/
