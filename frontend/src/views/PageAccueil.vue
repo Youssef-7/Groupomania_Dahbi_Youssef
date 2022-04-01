@@ -56,8 +56,6 @@
         <div class="flexPart2">
         <div class="flexPart1">
             <div class="imgProfilPublicationPart1">
-                <h1>{{ item.p_titre }}</h1>
-                <p>{{ item.p_text }}</p>
               <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
             </div>
           <div class="profilPublicationPart1">
@@ -66,12 +64,12 @@
           </div>
         </div>
           <div class="profilPublicationPart2">
-           <div><a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../books/delete?p_id=<%=data[i].p_id%>">Delete</a>  </div>
+           <div><a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../books/delete?p_id=<%=item.p_id>">Delete</a>  </div>
           </div>
         </div>
         <div class="profilPublicationPost">
-            <h1></h1>
-            <p></p>
+            <h1>{{ item.p_titre }}</h1>
+            <p>{{ item.p_text }}</p>
           <div class="profilPublicationPostImg">
             <img src="http://www.imcdb.org/i427377.jpg">
           </div>
@@ -101,6 +99,11 @@ export default {
       front_content: "",
       front_parent : 0,
       front_user_id : 64,
+      topic:[
+      front_title= "",
+      front_content= "",
+      front_parent= 0,
+      front_user_id= 64],
     };
   },
 created() {
@@ -119,10 +122,10 @@ created() {
     async savePublication() {
       try {
         await axios.post("http://localhost:3000/api/topic_messages", {
-          p_titre: this.front_title,
-          p_text: this.front_content,
-          p_parent: this.front_parent,
-          p_user_id :this.front_user_id,
+          p_titre: this.topic.front_title,
+          p_text: this.topic.front_content,
+          p_parent: this.topic.front_parent,
+          p_user_id :this.topic.front_user_id,
         });
         this.front_title = "";
         this.front_content = "";
