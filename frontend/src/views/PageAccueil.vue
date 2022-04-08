@@ -64,7 +64,7 @@
           </div>
         </div>
           <div class="profilPublicationPart2">
-           <div><a class="btn btn-danger delete" onclick="return alert('Are You sure?')" href="../books/delete?p_id=<%=item.p_id>">Delete</a>  </div>
+           <div><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
           </div>
         </div>
         <div class="profilPublicationPost">
@@ -89,8 +89,9 @@
 </template>
 <script>
 // import axios
-import axios from "axios";
- 
+
+import axios from "axios"
+
 export default {
   data() {
     return {
@@ -99,17 +100,19 @@ export default {
       front_content: "",
       front_parent : 0,
       front_user_id : 64,
-      topic:[
-      front_title= "",
-      front_content= "",
-      front_parent= 0,
-      front_user_id= 64],
     };
   },
 created() {
     this.getProducts();
   },
   methods: {
+    deletePub(p_id)
+    {
+       axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
+            console.log(result)
+            this.getProducts();
+        })
+    },
     async getProducts() {
       try {
         const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
@@ -122,10 +125,10 @@ created() {
     async savePublication() {
       try {
         await axios.post("http://localhost:3000/api/topic_messages", {
-          p_titre: this.topic.front_title,
-          p_text: this.topic.front_content,
-          p_parent: this.topic.front_parent,
-          p_user_id :this.topic.front_user_id,
+          p_titre: this.front_title,
+          p_text: this.front_content,
+          p_parent: this.front_parent,
+          p_user_id :this.front_user_id,
         });
         this.front_title = "";
         this.front_content = "";
