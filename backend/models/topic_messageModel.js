@@ -7,7 +7,7 @@ const db_queries = require("../util/db_queries.js");
 
 // Insert Topic_message to Database = création d'un message
 exports.insertTopicMessages = (data, result) => {
-    connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url) VALUES (?, ?, ?, ?, ?)", [data.front_parent, data.front_user_id, data.front_title, data.front_content, data.front_picture_url], (err, results) => {
+    connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url) VALUES (?, ?, ?, ?, ?)", [data.p_parent, data.p_user_id, data.p_titre, data.p_text, data.p_image_url], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else {
             db_queries.get_message_by_id(results.insertId, (err, res) => {
@@ -37,7 +37,7 @@ exports.getChildMessages = (parent_id, result) => {
 // Update Topic_message to Database = modifier un message
 exports.updateMessage = (data, result) => {
     if (data.front_picture_url) { // si on update l'image depuis le DOM
-        db_queries.get_picture_url_by_tm_id(data.front_p_id, (err, results) => { // appel de la querie de ../utils/db_queries
+        db_queries.get_picture_url_by_tm_id(data.p_id, (err, results) => { // appel de la querie de ../utils/db_queries
             console.log(results) // vérif des résultats
             if (err) { result(err, null); }
             else {
@@ -52,11 +52,11 @@ exports.updateMessage = (data, result) => {
                     }
                 } // puis on met à jour la base de données en insérant une nouvelle image
                 connection.query("UPDATE post_messages SET p_titre  = ?, p_text  = ?, p_image_url  = ? WHERE p_id  = ?",
-                    [data.front_title, data.front_content, data.front_picture_url, data.front_p_id], (err, results) => {
+                    [data.p_titre, data.p_text, data.p_image_url, data.p_id], (err, results) => {
                     if (err) { console.log("error: ", err); result(err, null); }
                     else {
                         connection.query("UPDATE post_messages  SET p_titre  = ? WHERE p_parent  = ?",
-                            [data.front_title, data.front_p_id], (err, results) => {
+                            [data.p_titre, data.p_id], (err, results) => {
                             if (err) { console.log("error: ", err); result(err, null); }
                             else {
                                 result(null, results);
