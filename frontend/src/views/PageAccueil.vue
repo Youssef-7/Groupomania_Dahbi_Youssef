@@ -22,6 +22,7 @@
                 </button>
                 <div class="dropdown-child">
                  <a href="/books">Mon profil</a>
+                 <button @click="deleteAccount" >supprimer votre compte</button>
                  <a href="#">
                   <form method="POST" action="/logout">
                     <button type="submit" class="btn btn-primary">Log out</button>
@@ -76,6 +77,11 @@
           <div class="profilPublicationPostInter">
             <router-link to="/PageCommentaire">Page suivante</router-link>
           </div>
+          <input v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
+          <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
+         type="text">
+          <input v-model="front_p_id" type="hidden" id="p_user_id" name="front_user_id" >
+         <button v-on:click="modifPub">modifier</button>
        </div>
       </div>
       </div>
@@ -96,10 +102,12 @@ export default {
   data() {
     return {
       items: [],
+      front_p_id:"27",
       front_title: "",
       front_content: "",
       front_parent : 0,
-      front_user_id : 64,
+      front_user_id : "",
+      front_picture_url:"",
     };
   },
 created() {
@@ -113,6 +121,14 @@ created() {
             this.getProducts();
         })
     },
+        deleteAccount()
+    {
+       axios.delete('http://localhost:3000/api/users/'+ localStorage.getItem('userId')).then((result)=>{
+            console.log(result)
+            this.$router.push("/");
+        })
+    },
+
     async getProducts() {
       try {
         const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
@@ -128,7 +144,7 @@ created() {
           p_titre: this.front_title,
           p_text: this.front_content,
           p_parent: this.front_parent,
-          p_user_id :this.front_user_id,
+          p_user_id :localStorage.getItem("userId"),
         });
         this.front_title = "";
         this.front_content = "";
@@ -138,6 +154,7 @@ created() {
         console.log(err);
       }
     },
+
   },
 };
 </script>
@@ -425,3 +442,23 @@ form {
 
 
 </style>
+<!-- async savePublication() {
+        const body ={
+            p_titre:this.front_title,
+            p_text:this.front_content,
+            p_parent:this.front_parent,
+            p_user_id: this.front_user_id
+        }
+            data.append("topic", JSON.stringify(body))
+      try {
+        await axios.post("http://localhost:3000/api/topic_messages",topic)
+        this.front_title = "";
+        this.front_content = "";
+        this.front_parent = "";
+        this.front_user_id ="";
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+}; -->
