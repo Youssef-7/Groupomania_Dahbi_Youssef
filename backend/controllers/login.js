@@ -65,7 +65,6 @@ exports.login = async (req, res, next) => {
         res.status(403).json({ error: 'requête non autorisée'});
     }
 };
-
 // exports.login = (req, res) => {
 //     try {
 //         const email = req.body.front_email;

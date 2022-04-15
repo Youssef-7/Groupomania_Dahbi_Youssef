@@ -4,10 +4,12 @@ const topicMessages = require("../models/topic_messageModel.js");
 exports.createMessage = (req, res) => {
     // console.log(req);
 
-    const data = req.body.topic;
+    const data = req.body;
  // JSON.parse(req.body.message)
     data['front_picture_url'] = req.hasOwnProperty('file') ? req.file.path : null;
+    console.log(data)
     topicMessages.insertTopicMessages(data, (err, results) => {
+        
         if (err){res.send(err);} 
         else {res.json(results);}
     });
@@ -31,9 +33,9 @@ exports.showParentTopicMessages = (req, res) => {
 
 // Modifier un message : UPDATE Topic_message to Database
 exports.updateMessage = (req, res) => {
-    const data = req.body.topic; // JSON.parse(req.body.message)
-    data['tm_picture_url']= req.hasOwnProperty('file') ? req.file.path : null;
-    // console.log(data)
+    const data = req.body; // JSON.parse(req.body.message)
+    data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
+    console.log("update"+ data)
     topicMessages.updateMessage(data, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
