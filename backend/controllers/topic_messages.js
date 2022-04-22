@@ -7,9 +7,8 @@ exports.createMessage = (req, res) => {
     const data = req.body;
  // JSON.parse(req.body.message)
     data['front_picture_url'] = req.hasOwnProperty('file') ? req.file.path : null;
-    console.log(data)
     topicMessages.insertTopicMessages(data, (err, results) => {
-        
+        console.log(data)
         if (err){res.send(err);} 
         else {res.json(results);}
     });
@@ -35,7 +34,7 @@ exports.showParentTopicMessages = (req, res) => {
 exports.updateMessage = (req, res) => {
     const data = req.body; // JSON.parse(req.body.message)
     data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
-    console.log("update"+ data)
+    console.log( data)
     topicMessages.updateMessage(data, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
