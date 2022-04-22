@@ -36,7 +36,7 @@ exports.getChildMessages = (parent_id, result) => {
 
 // Update Topic_message to Database = modifier un message
 exports.updateMessage = (data, result) => {
-    if (data.front_picture_url) { // si on update l'image depuis le DOM
+    if (data.p_image_url) { // si on update l'image depuis le DOM
         db_queries.get_picture_url_by_tm_id(data.p_id, (err, results) => { // appel de la querie de ../utils/db_queries
             console.log(results) // vérif des résultats
             if (err) { result(err, null); }
@@ -68,11 +68,11 @@ exports.updateMessage = (data, result) => {
         })
     } else { // gestion si on update pas l'image
         connection.query("UPDATE post_messages  SET p_titre  = ?, p_text  = ? WHERE p_id  = ?", // MAJ de la BDD (titre et contenu du message) selon l'ID du message
-            [data.front_title, data.front_content, data.front_p_id], (err, results) => {
+            [data.p_titre, data.p_text, data.p_id], (err, results) => {
             if (err) { console.log("error: ", err); result(err, null); }
             else {
                 connection.query("UPDATE post_messages SET p_titre  = ? WHERE p_parent  = ?",
-                    [data.front_title, data.front_p_id], (err, results) => {
+                    [data.p_titre, data.p_id], (err, results) => {
                     if (err) { console.log("error: ", err); result(err, null); }
                     else {
                         result(null, results);
