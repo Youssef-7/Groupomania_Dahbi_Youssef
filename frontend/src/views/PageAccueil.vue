@@ -71,6 +71,7 @@
         <div class="profilPublicationPost">
             <h1>{{ item.p_titre }}</h1>
             <p>{{ item.p_text }}</p>
+            <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
             <img src="http://www.imcdb.org/i427377.jpg">
           </div>
@@ -103,7 +104,7 @@ export default {
   data() {
     return {
       items: [],
-      front_p_id:"",
+      front_p_id: 45,
       front_title: "",
       front_content: "",
       front_parent : 0,
@@ -168,6 +169,7 @@ created() {
         this.front_content = "";
         this.front_picture_url ="";
         this.front_p_id="";
+        this.getProducts();
       } catch (err) {
         console.log(err);
       }
