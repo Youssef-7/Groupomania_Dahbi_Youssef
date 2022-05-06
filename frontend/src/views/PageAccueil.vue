@@ -82,7 +82,7 @@
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
           <input v-model="front_picture_url" type="hidden" id="front_picture_url" name="front_picture_url" >
-          <input v-model="front_p_id" type="hidden" id="front_p_id" name="front_p_id" >
+          <input :value="item.p_id"  type="hidden, number" id="front_p_id" name="front_p_id" >
          <button v-on:click="modifPub">modifier</button>
        </div>
       </div>
@@ -104,7 +104,7 @@ export default {
   data() {
     return {
       items: [],
-      front_p_id: 45,
+      p_id: "",
       front_title: "",
       front_content: "",
       front_parent : 0,
@@ -163,12 +163,12 @@ created() {
           p_titre: this.front_title,
           p_text: this.front_content,
           p_image_url: this.front_picture_url,
-          p_id: this.front_p_id,
+          p_id: this.p_id,
         });
         this.front_title = "";
         this.front_content = "";
         this.front_picture_url ="";
-        this.front_p_id="";
+        this.p_id="";
         this.getProducts();
       } catch (err) {
         console.log(err);
