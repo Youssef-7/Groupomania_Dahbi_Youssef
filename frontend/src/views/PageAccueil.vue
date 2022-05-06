@@ -82,7 +82,7 @@
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
           <input v-model="front_picture_url" type="hidden" id="front_picture_url" name="front_picture_url" >
-          <input :value="item.p_id"  type="hidden, number" id="front_p_id" name="front_p_id" >
+          <input :value="item.p_id"  type="text" id="p_id" name="p_id" >
          <button v-on:click="modifPub">modifier</button>
        </div>
       </div>
