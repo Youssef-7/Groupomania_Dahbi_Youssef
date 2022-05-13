@@ -32,8 +32,10 @@ exports.showParentTopicMessages = (req, res) => {
 
 // Modifier un message : UPDATE Topic_message to Database
 exports.updateMessage = (req, res) => {
+    const id = req.params.p_id;
     const data = req.body; // JSON.parse(req.body.message)
     data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
+    data['p_id']= id; 
     console.log( data)
     topicMessages.updateMessage(data, (err, results) => {
         if (err){res.send(err);}
