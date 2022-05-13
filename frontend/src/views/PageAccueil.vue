@@ -41,6 +41,7 @@
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
           <input v-model="front_parent" type="hidden" id="p_parent" name="front_parent"  >
           <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
+          <input :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
         </div>
@@ -73,6 +74,7 @@
             <p>{{ item.p_text }}</p>
             <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
+            <img :src="item.p_image_url">
             <img src="http://www.imcdb.org/i427377.jpg">
           </div>
           <div class="profilPublicationPostInter">
@@ -81,9 +83,9 @@
           <input v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input v-model="front_picture_url" type="hidden" id="front_picture_url" name="front_picture_url" >
-          <input :value="item.p_id"  type="text" id="p_id" name="p_id" >
-         <button v-on:click="modifPub">modifier</button>
+          <input :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
+          <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
+         <button v-on:click="modifPub(item.p_id)">modifier</button>
        </div>
       </div>
       </div>
@@ -157,9 +159,10 @@ created() {
         console.log(err);
       }
     },
-    async modifPub() {
+    async modifPub(p_id) {
       try {
-        await axios.put("http://localhost:3000/api/topic_messages", {
+        console.log(this.front_title+" "+ this.front_content + ""+ this.p_id)
+        await axios.put("http://localhost:3000/api/topic_messages/"+p_id, {
           p_titre: this.front_title,
           p_text: this.front_content,
           p_image_url: this.front_picture_url,
