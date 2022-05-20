@@ -66,7 +66,7 @@
           </div>
         </div>
           <div class="profilPublicationPart2">
-           <div><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
+           <div v-if ="user == item.p_user_id" ><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
           </div>
         </div>
         <div class="profilPublicationPost">
@@ -75,17 +75,19 @@
             <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
             <img :src="item.p_image_url">
-            <img src="http://www.imcdb.org/i427377.jpg">
           </div>
           <div class="profilPublicationPostInter">
             <router-link to="/PageCommentaire">Page suivante</router-link>
           </div>
-          <input v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
-          <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
+          <input v-if ="user == item.p_user_id" v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
+          <input v-if ="user == item.p_user_id" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
+          <input v-if ="user == item.p_user_id" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
-         <button v-on:click="modifPub(item.p_id)">modifier</button>
+          <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
+          <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
+           <input :value="user"  type="hidden" id="user " name="user " >
+         <button v-if ="user == item.p_user_id" v-on:click="modifPub(item.p_id)">modifier</button>
        </div>
       </div>
       </div>
@@ -110,7 +112,8 @@ export default {
       front_title: "",
       front_content: "",
       front_parent : 0,
-      front_user_id : "",
+      front_user_id :"",
+      user : localStorage.getItem("userId"),
       front_picture_url:"",
     };
   },
