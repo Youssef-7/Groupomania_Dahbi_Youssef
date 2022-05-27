@@ -33,7 +33,7 @@
       </nav>
     </header>
     <div class="alert alert-danger" role="alert"></div>
-    <section id= "allPost">
+    <section id= "allPost" v-for="item in items" :key="item.u_id">
     <div class="allPublication">
       <div class="publicationPost">
         <div class="profilPublication">
@@ -52,8 +52,8 @@
           </div>
         </div>
         <div class="profilPublicationPost">
-            <h1></h1>
-            <p></p>
+            <h1>{{ item.p_titre }}</h1>
+            <p>{{ item.p_text }}</p>
           <div class="profilPublicationPostImg">
             <img src="http://www.imcdb.org/i427377.jpg">
           </div>
@@ -62,26 +62,76 @@
               <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
             </div>
             <form>
-              <input name="createPost" class="createPost" placeholder="Ecrivez un commentaire..." type="text">
+              <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
+              <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
             </form>
-            <div class="mon commentaire"> mon commentaire</div>
+            <button @click="savePublication" type="submit" class="sendPublication" value="Add"> Envoyer </button>
           </div>
        </div>
       </div>
       </div>
     </div>
-    </section>
+    
     <section id="commentaires">
     <div class="commentaires">
-        <p>commentaire 1</p>
+        <p>{{ item.p_text }}</p>
     </div>
     </section>
+</section>
     <footer>
     </footer>
 
     </div>
 </body>
 </template>
+<script>
+// import axios
+
+import axios from "axios"
+
+export default {
+  data() {
+    return {
+      items: [],
+      p_id: "",
+      front_title: "",
+      front_content: "",
+      front_parent : "",
+      front_user_id :"",
+      user : localStorage.getItem("userId"),
+      front_picture_url:"",
+    };
+  },
+created() {
+    this.getProducts();
+  },
+  methods: {
+
+    async getProducts() {
+      try {
+        const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
+        this.items = response.data;
+        this.front_p_id = response.data.p_id;
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    // Create New publication
+    async savePublication() {
+      try {
+        await axios.post("http://localhost:3000/api/topic_messages", {
+          p_text: this.front_content,
+          p_user_id :localStorage.getItem("userId"),
+        });
+        this.front_title = "";
+        this.front_content = "";
+      } catch (err) {
+        console.log(err);
+      }
+    },
+  },
+};
+</script>
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
 /*Menu deroulant*/
@@ -242,8 +292,9 @@ form {
 }
 #allPost{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 .allPublication{
     min-height: 400px;
