@@ -53,6 +53,7 @@ btnConect(){
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
                     this.$router.push("/PageAccueil");
+                    
                     console.log(this.login)
                 });
             },
@@ -61,7 +62,7 @@ btnSignUp(){
             .then(response => {
                     const token =  response.data.token;
                     const userId = response.data.userId;
-                    const level = response.data.level;
+                    const level = response.data.u_role;
                     localStorage.setItem("access_token", token),
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
@@ -74,12 +75,13 @@ btnSignUp(){
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 body{
     margin : 0px;
     padding: 0px;
     margin: 0px;
     background-color: #FBF9FF;
+
 }
 a{ 
 text-decoration: none; }
@@ -87,6 +89,9 @@ text-decoration: none; }
 .bgImage{
     background: url(../assets/logo.png);
     position: relative;
+}
+.blocMedia, input, button {
+    font-family: 'Lato';
 }
 .blocMedia{
  width: 700px;
@@ -105,7 +110,7 @@ text-decoration: none; }
    
 }
 #formBloc{
-    background-color: white;
+    background-color: #FFD7D7;
     width: 400px;
     margin: auto;
     padding: 0 15px 10px;
@@ -113,7 +118,7 @@ text-decoration: none; }
     box-shadow: 20px 10px 5px 3px rgba(0,0,0,0.23);
 }
 form p {
-    color: #90E795;
+    color: #4E5166;
     margin-top: 7px;
     margin-bottom: 15px;
     margin-left: 122px;
@@ -140,8 +145,8 @@ form p:hover{
     padding: 15px 10px;
     margin: 10px 0px 0px 12px;
     border-radius: 8px;
-    background-color:#BCFCC1;
-    color: #424242;
+    background-color:#4E5166;
+    color: white;
     font-weight: bold;
 }
 #btnConect:hover{
