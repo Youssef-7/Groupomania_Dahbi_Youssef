@@ -77,7 +77,7 @@
             <img :src="item.p_image_url">
           </div>
           <div class="profilPublicationPostInter">
-            <router-link to="/PageCommentaire">Page suivante</router-link>
+         
           </div>
           <input v-if ="user == item.p_user_id" v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
           <input v-if ="user == item.p_user_id" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
@@ -184,8 +184,12 @@ created() {
 };
 </script>
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 /*Menu deroulant*/
+.container, input, button {
+    font-family: 'Lato';
+}
+
 .profilButton{
     float: right;
     padding: 0 10px;
@@ -220,11 +224,11 @@ display: block;
 .dropdown:hover .dropdown-child {
 display: block;
 }
-/**************************************/
-body{
+/**************************************/ 
+body {
+    background-color: #FFD7D7;
     margin: 0px;
     padding: 0px;
-    background-color: white;
 }
 a{ 
 text-decoration: none; }
@@ -295,7 +299,7 @@ text-decoration: none; }
 .publication{
     width: 50%;
     padding: 10px;
-    background-color: white;
+    background-color: #4E5166;
     margin: 50px auto;
     border: 1px solid #E3E3E3;
     border-radius: 9px;
@@ -373,7 +377,8 @@ form {
 }
 .profilPublication{
     width: 100%;
-    background-color: white;
+    background-color: #4E5166;
+    color: white;
     margin-top: 0;
     box-shadow: 0px 0px 8px -2px #B4B4B4;
     border-radius: 10px;
