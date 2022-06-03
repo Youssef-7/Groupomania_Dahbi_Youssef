@@ -41,7 +41,7 @@
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
           <input v-model="front_parent" type="hidden" id="p_parent" name="front_parent"  >
           <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
-          <input :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
+          <input @change="readURL" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
         </div>
@@ -74,7 +74,7 @@
             <p>{{ item.p_text }}</p>
             <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
-            <img :src="item.p_image_url">
+            <img :src="item.p_image_url" id="image">
           </div>
           <div class="profilPublicationPostInter">
          
@@ -121,6 +121,19 @@ created() {
     this.getProducts();
   },
   methods: {
+    readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+        reader.onload = function (e) {
+            var $ = document.getElementById;
+             $('#image')
+             .attr('src', e.target.result)
+             .width(150)
+             .height(200);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    },
     deletePub(p_id)
     {
        axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
