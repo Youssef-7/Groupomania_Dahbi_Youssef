@@ -82,7 +82,7 @@
           <input v-if ="user == item.p_user_id" v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
           <input v-if ="user == item.p_user_id" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input v-if ="user == item.p_user_id" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
+          <input v-if ="user == item.p_user_id" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
@@ -121,19 +121,7 @@ created() {
     this.getProducts();
   },
   methods: {
-    readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-        reader.onload = function (e) {
-            var $ = document.getElementById;
-             $('#image')
-             .attr('src', e.target.result)
-             .width(150)
-             .height(200);
-            };
-            reader.readAsDataURL(input.files[0]);
-        }
-    },
+    readURL(e) {this.front_picture_url = e.target.files[0] },
     deletePub(p_id)
     {
        axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
@@ -165,12 +153,14 @@ created() {
           p_titre: this.front_title,
           p_text: this.front_content,
           p_parent: this.front_parent,
+          p_image_url: this.front_picture_url,
           p_user_id :localStorage.getItem("userId"),
         });
         this.front_title = "";
         this.front_content = "";
         this.front_parent = "";
         this.front_user_id ="";
+        this.this.front_user_id ="";
       } catch (err) {
         console.log(err);
       }
