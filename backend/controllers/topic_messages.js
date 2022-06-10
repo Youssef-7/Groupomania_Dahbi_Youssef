@@ -6,7 +6,7 @@ exports.createMessage = (req, res) => {
 
     const data = req.body;
  // JSON.parse(req.body.message)
-    data['front_picture_url'] = req.hasOwnProperty('file') ? req.file.path : null;
+    data['p_image_url'] = req.hasOwnProperty('file') ? req.file.path : null;
     topicMessages.insertTopicMessages(data, (err, results) => {
         console.log(data)
         if (err){res.send(err);} 
