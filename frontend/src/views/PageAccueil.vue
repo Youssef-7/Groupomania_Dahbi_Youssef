@@ -41,7 +41,7 @@
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
           <input v-model="front_parent" type="hidden" id="p_parent" name="front_parent"  >
           <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
-          <input @change="readURL" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" >
+          <input @change="readURL"  type="file" >
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
         </div>
@@ -74,7 +74,7 @@
             <p>{{ item.p_text }}</p>
             <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
-            <img :src="item.p_image_url" id="image">
+            <img :src="item.p_image_url" >
           </div>
           <div class="profilPublicationPostInter">
          
@@ -82,7 +82,7 @@
           <input v-if ="user == item.p_user_id" v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
           <input v-if ="user == item.p_user_id" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input v-if ="user == item.p_user_id" :value="front_picture_url" type="file" id="front_picture_url" name="front_picture_url" @change="readURL">
+          <input v-if ="user == item.p_user_id" type="file"  @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
@@ -121,7 +121,7 @@ created() {
     this.getProducts();
   },
   methods: {
-    readURL(e) {this.front_picture_url = e.target.files[0] },
+    readURL(e) {this.front_picture_url = e.target.files[0], console.log(this.front_picture_url)},
     deletePub(p_id)
     {
        axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
@@ -148,6 +148,7 @@ created() {
     },
     // Create New publication
     async savePublication() {
+        console.log(this.front_picture_url)
       try {
         await axios.post("http://localhost:3000/api/topic_messages", {
           p_titre: this.front_title,
@@ -160,7 +161,7 @@ created() {
         this.front_content = "";
         this.front_parent = "";
         this.front_user_id ="";
-        this.this.front_user_id ="";
+        this.front_picture_url ="";
       } catch (err) {
         console.log(err);
       }
