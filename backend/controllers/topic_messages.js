@@ -4,7 +4,7 @@ const topicMessages = require("../models/topic_messageModel.js");
 exports.createMessage = (req, res) => {
     // console.log(req);
 
-    const data = req.body;
+    const data = JSON.parse(req.body.topic);
  // JSON.parse(req.body.message)
     console.log(data)
     data['p_image_url'] = req.hasOwnProperty('file') ? req.file.path : null;
