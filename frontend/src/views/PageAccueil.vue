@@ -121,7 +121,41 @@ created() {
     this.getProducts();
   },
   methods: {
-    readURL(e) {this.front_picture_url = e.target.files[0], console.log(this.front_picture_url)},
+savePublication(e) {
+      e.preventDefault();
+      const access_token = localStorage.getItem("access_token");
+      const user_id = localStorage.getItem("userId");
+      const data_image = new FormData();
+      data_image.append("image", this.readURL);
+      const body = {
+          p_titre: this.front_title,
+          p_text: this.front_content,
+          p_parent: "0",
+          p_user_id: user_id,
+      };
+      data_image.append("topic", JSON.stringify(body));
+      console.log(data_image)
+      var config = {
+        method: "post",
+        url: "http://localhost:3000/api/topic_messages",
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "multipart/form-data",
+        },
+        data: data_image,
+      };
+           axios(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          this.$router.go();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    readURL(e) {this.front_picture_url = e.target.files[0]},
+
+
     deletePub(p_id)
     {
        axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
@@ -147,25 +181,25 @@ created() {
       }
     },
     // Create New publication
-    async savePublication() {
-        console.log(this.front_picture_url)
-      try {
-        await axios.post("http://localhost:3000/api/topic_messages", {
-          p_titre: this.front_title,
-          p_text: this.front_content,
-          p_parent: this.front_parent,
-          p_image_url: this.front_picture_url,
-          p_user_id :localStorage.getItem("userId"),
-        });
-        this.front_title = "";
-        this.front_content = "";
-        this.front_parent = "";
-        this.front_user_id ="";
-        this.front_picture_url ="";
-      } catch (err) {
-        console.log(err);
-      }
-    },
+    // async savePublication() {
+    //     console.log(this.front_picture_url)
+    //   try {
+    //     await axios.post("http://localhost:3000/api/topic_messages", {
+    //       p_titre: this.front_title,
+    //       p_text: this.front_content,
+    //       p_parent: this.front_parent,
+    //       p_image_url: this.front_picture_url,
+    //       p_user_id :localStorage.getItem("userId"),
+    //     });
+    //     this.front_title = "";
+    //     this.front_content = "";
+    //     this.front_parent = "";
+    //     this.front_user_id ="";
+    //     this.front_picture_url ="";
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
     async modifPub(p_id) {
       try {
         console.log(this.front_title+" "+ this.front_content + ""+ this.p_id)
