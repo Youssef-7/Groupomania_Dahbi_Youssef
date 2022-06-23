@@ -74,20 +74,24 @@
             <p>{{ item.p_text }}</p>
             <p>{{item.p_id}}</p>
           <div class="profilPublicationPostImg">
-            <img :src="item.p_image_url" >
+            <img :src="'http://localhost:3000/' + item.p_image_url" >
           </div>
           <div class="profilPublicationPostInter">
          
           </div>
-          <input v-if ="user == item.p_user_id" v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
-          <input v-if ="user == item.p_user_id" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
+          <div v-if ="user == item.p_user_id">
+          <button v-if ="mode == 'normal'"  @click="modifyMode">Modifier la publication</button>
+          <button v-else  @click="normalMode">Quitter la modification</button>
+          </div>
+          <input v-if ="user == item.p_user_id && mode == 'modify'"  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
+          <input v-if ="user == item.p_user_id && mode == 'modify'" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input v-if ="user == item.p_user_id" type="file"  @change="readURL">
+          <input v-if ="user == item.p_user_id && mode == 'modify'" type="file"  @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
            <input :value="user"  type="hidden" id="user " name="user " >
-         <button v-if ="user == item.p_user_id" v-on:click="modifPub(item.p_id)">modifier</button>
+         <button v-if ="user == item.p_user_id && mode == 'modify'" v-on:click="modifPub(item.p_id)">modifier</button>
        </div>
       </div>
       </div>
@@ -115,18 +119,27 @@ export default {
       front_user_id :"",
       user : localStorage.getItem("userId"),
       front_picture_url:"",
+      mode : "normal",
     };
   },
 created() {
     this.getProducts();
   },
   methods: {
+    normalMode(){
+        this.mode = "normal";
+
+    },
+    modifyMode(){
+        this.mode = "modify";
+    },
 savePublication(e) {
       e.preventDefault();
       const access_token = localStorage.getItem("access_token");
       const user_id = localStorage.getItem("userId");
       const data_image = new FormData();
-      data_image.append("image", this.readURL);
+      data_image.append("image", this.front_picture_url);
+      console.log(data_image)
       const body = {
           p_titre: this.front_title,
           p_text: this.front_content,
@@ -138,6 +151,36 @@ savePublication(e) {
       var config = {
         method: "post",
         url: "http://localhost:3000/api/topic_messages",
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "multipart/form-data",
+        },
+        data: data_image,
+      };
+           axios(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          this.$router.go();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    modifPub(p_id) {
+      const access_token = localStorage.getItem("access_token");
+      const data_image = new FormData();
+      data_image.append("image", this.front_picture_url);
+      console.log(data_image)
+      const body = {
+          p_titre: this.front_title,
+          p_text: this.front_content,
+          p_id: this.p_id,
+      };
+      data_image.append("topic", JSON.stringify(body));
+      console.log(data_image)
+      var config = {
+        method: "put",
+        url: "http://localhost:3000/api/topic_messages/"+p_id,
         headers: {
           Authorization: "Bearer " + access_token,
           "Content-Type": "multipart/form-data",
@@ -200,24 +243,24 @@ savePublication(e) {
     //     console.log(err);
     //   }
     // },
-    async modifPub(p_id) {
-      try {
-        console.log(this.front_title+" "+ this.front_content + ""+ this.p_id)
-        await axios.put("http://localhost:3000/api/topic_messages/"+p_id, {
-          p_titre: this.front_title,
-          p_text: this.front_content,
-          p_image_url: this.front_picture_url,
-          p_id: this.p_id,
-        });
-        this.front_title = "";
-        this.front_content = "";
-        this.front_picture_url ="";
-        this.p_id="";
-        this.getProducts();
-      } catch (err) {
-        console.log(err);
-      }
-    },
+    // async modifPub(p_id) {
+    //   try {
+    //     console.log(this.front_title+" "+ this.front_content + ""+ this.p_id)
+    //     await axios.put("http://localhost:3000/api/topic_messages/"+p_id, {
+    //       p_titre: this.front_title,
+    //       p_text: this.front_content,
+    //       p_image_url: this.front_picture_url,
+    //       p_id: this.p_id,
+    //     });
+    //     this.front_title = "";
+    //     this.front_content = "";
+    //     this.front_picture_url ="";
+    //     this.p_id="";
+    //     this.getProducts();
+    //   } catch (err) {
+    //     console.log(err);
+    //   }
+    // },
   },
 };
 </script>
@@ -348,7 +391,7 @@ form {
     margin-right: 30px;
 }
 .createPost{
-    width: 100%;
+    width: 95%;
     height: 50px;
     
 }
