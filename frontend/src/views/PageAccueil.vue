@@ -25,7 +25,7 @@
                  <button @click="deleteAccount" >supprimer votre compte</button>
                  <a href="#">
                   <form method="POST" action="/logout">
-                    <button type="submit" class="btn btn-primary">Log out</button>
+                    <button type="submit" class="btn btn-primary" @click="logout">Log out</button>
                 </form>
                 </a>
                 </div>  
@@ -213,7 +213,11 @@ savePublication(e) {
             this.$router.push("/");
         })
     },
-
+    logout()
+    {
+        localStorage.clear();
+        this.$router.push("/");
+    },
     async getProducts() {
       try {
         const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
