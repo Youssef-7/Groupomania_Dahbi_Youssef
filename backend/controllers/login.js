@@ -11,6 +11,9 @@ exports.signup = (req, res) => { // async = (req, res) => {
         const email = req.body.front_email;
         const pwd = req.body.front_password;
         if (!pseudo || !email || !pwd) { res.status(400).json(`${!pseudo ? "pseudo" : !email ? "email" : "pwd"} manquant`); }
+        if (email === u_email) {
+        return res.status(400).json({ error: "cette email est déjà utilisé" });
+      }
         else {
             bcrypt.hash(req.body.front_password, 10)
             .then(hash => {
