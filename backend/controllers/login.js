@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt'); // Algorythme de hachage = package de chiffrement
 const jwt = require('jsonwebtoken'); // standard qui permet l'échange de jetons
-
+const dotenv = require("dotenv").config();
 const userData = require('../models/usersModel.js');
 const { createPool } = require('mysql2/promise');
 
@@ -54,9 +54,9 @@ exports.login = async (req, res, next) => {
                     userId: results[0].u_id,
                     token: jwt.sign (
                         { userId: results[0].u_id },
-                        'RANDOM_TOKEN_SECRET', // clé secrète de l'encodage - en production : 'string' longue et aléatoire
-                        { expiresIn: '24h' }
-                        )
+                        `${process.env.SECRET_TOKEN_KEY}`, // clé secrète de l'encodage - en production : 'string' longue et aléatoire
+                        { expiresIn: '24h' },
+                        ),
                     });
                 })
                 .catch(err => res.status(500).json({ err }));
