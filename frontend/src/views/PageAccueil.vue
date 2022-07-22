@@ -554,8 +554,20 @@ form {
     border-radius: 50%;
     object-fit: cover;
 }
-
-
+@media all and (max-width: 1080px){
+.socialTitle img{
+    width: 200px;
+}
+.socialTitle{margin-right: 0px;}
+.searchBar{display: none;}
+ .allPublication{
+ width: 100%;
+ }
+    body{
+        width: 100%;
+    }
+}
+.publication{width: 80%;}
 </style>
 <!-- async savePublication() {
         const body ={
