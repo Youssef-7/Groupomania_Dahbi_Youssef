@@ -11,9 +11,6 @@ exports.signup = (req, res) => { // async = (req, res) => {
         const email = req.body.front_email;
         const pwd = req.body.front_password;
         if (!pseudo || !email || !pwd) { res.status(400).json(`${!pseudo ? "pseudo" : !email ? "email" : "pwd"} manquant`); }
-        if (email === u_email) {
-        return res.status(400).json({ error: "cette email est déjà utilisé" });
-      }
         else {
             bcrypt.hash(req.body.front_password, 10)
             .then(hash => {
@@ -21,7 +18,7 @@ exports.signup = (req, res) => { // async = (req, res) => {
                     u_pseudo: req.body.front_pseudo, // requiert le pseudo du corps de la requête
                     u_email: req.body.front_email, // adresse email du corps de la requête
                     u_password: hash // le mot de passe est stocké crypté
-                    // date et id générés automatiquement et level default = 1
+                    // date et id générés automatiquement et level default = 
                 },(err, results) => {
                     if(err) res.status(500).json({err})
                     else res.status(201).json('Utilisateur créé');
