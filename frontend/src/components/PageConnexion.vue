@@ -180,7 +180,15 @@ input {
     border-radius: 8px;
     border: solid 1px #E5E6E4;
 }
-
+@media all and (max-width: 1080px){
+    .blocMedia{width: 100%; display: block; margin: 0px;}
+    .socialTitle{width: 100%;}
+    #formBloc{width: 80%;}
+    #btnConect{width: 250px;}
+    .socialTitle img{ width: 200px }
+    .socialTitle{ width: 200px }
+    input{ width: 80%; }
+}
 
 </style>
 
