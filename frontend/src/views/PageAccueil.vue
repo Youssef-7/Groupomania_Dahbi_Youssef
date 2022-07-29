@@ -133,6 +133,20 @@ created() {
     modifyMode(){
         this.mode = "modify";
     },
+async getProducts() {
+        
+        const access_token = localStorage.getItem("access_token");
+        // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
+        // this.items = response.data;
+        // this.front_p_id = response.data.p_id;
+    var config = {
+      method: "get",
+      url: "http://localhost:3000/api/topic_messages/parent" ,
+      headers: { Authorization: "Bearer " + access_token },
+    };
+    const response = await axios(config);
+    this.items = response.data
+    },
 savePublication(e) {
       e.preventDefault();
       const access_token = localStorage.getItem("access_token");
@@ -218,15 +232,7 @@ savePublication(e) {
         localStorage.clear();
         this.$router.push("/");
     },
-    async getProducts() {
-      try {
-        const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
-        this.items = response.data;
-        this.front_p_id = response.data.p_id;
-      } catch (err) {
-        console.log(err);
-      }
-    },
+
     // Create New publication
     // async savePublication() {
     //     console.log(this.front_picture_url)
