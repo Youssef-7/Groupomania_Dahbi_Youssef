@@ -153,6 +153,17 @@ exports.moderateMessage = (data, result) => {
     });
 }
 
+// Creer un like 
+exports.likeMessage = (data, result) => {
+    connection.query("UPDATE post_messages  SET like = ? WHERE p_user_id = ? AND p_id = ?", [data.like, data.p_user_id, data.p_id], (err, results) => {
+        if (err) { console.log("error: ", err); result(err, null); }
+           if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
+                if (err) { console.log("error: ", err); result(err, null); }
+                else { result(null, results); }
+        });
+        }
+    });
+}
 // Get one topic
 // exports.getMessageByTitle = (title, result) => {
 //     connection.query("SELECT * FROM topic_messages WHERE tm_title = ?", [title], (err, results) => {
