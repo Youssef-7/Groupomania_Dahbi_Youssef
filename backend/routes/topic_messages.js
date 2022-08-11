@@ -38,7 +38,9 @@ router.put('/topic_messages/moderation', auth, topic_messagesCtrl.updateModerati
 // Delete Message from Database// route temporaire sans auth
 router.delete('/topic_messages/:p_id', auth, topic_messagesCtrl.deleteMessage);
 
-router.put('/topic_messages/like', auth, multer, topic_messagesCtrl.createlikeMessage);
+router.post('/topic_messages/like', auth, multer, topic_messagesCtrl.createLikeMessage);
+
+router.delete('/topic_messages/:like_id', auth, multer, topic_messagesCtrl.deleteLikeMessage);
 
 // Get message by title
 // router.get('/topic_messages', auth, topic_messagesCtrl.showMessageByTitle);
