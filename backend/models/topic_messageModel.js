@@ -155,13 +155,34 @@ exports.moderateMessage = (data, result) => {
 
 // Creer un like 
 exports.likeMessage = (data, result) => {
-    connection.query("UPDATE post_messages  SET like = ? WHERE p_user_id = ? AND p_id = ?", [data.like, data.p_user_id, data.p_id], (err, results) => {
+    connection.query( "INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?)",[data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
-           if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
-                if (err) { console.log("error: ", err); result(err, null); }
-                else { result(null, results); }
+                else { connection.query("SELECT COUNT(*) FROM like_message WHERE like_p_id = like_p_id ", (err, results) => {
+                        if (err) { console.log("error: ", err); result(err, null); }
+                            else { connection.query("UPDATE post_messages  SET like = ? WHERE p_id = ? VALUES (?, ?)",[data.like_u_id, data.like_p_id],(err, results) => {
+        if (err) { console.log("error: ", err); result(err, null); }
+           // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
+             })
+            };
         });
-        }
+        };
+
+    });
+}
+
+exports.unlikeMessage = (data, result) => {
+    connection.query( "DELETE FROM like_message WHERE like_id = ?"[id], (err, results) => {
+        if (err) { console.log("error: ", err); result(err, null); }
+                else { connection.query("SELECT COUNT(*) FROM like_message WHERE like_p_id = like_p_id ", (err, results) => {
+                        if (err) { console.log("error: ", err); result(err, null); }
+                            else { connection.query("UPDATE post_messages  SET like = ? WHERE p_id = ?",[data.like_u_id, data.like_p_id],(err, results) => {
+        if (err) { console.log("error: ", err); result(err, null); }
+           // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
+             })
+            };
+        });
+        };
+
     });
 }
 // Get one topic
