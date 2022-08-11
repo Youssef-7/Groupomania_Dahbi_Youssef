@@ -59,9 +59,17 @@ exports.deleteMessage = (req, res) => {
         else{res.json(results);}
     });
 };
-exports.createlikeMessage = (req, res) => {
+exports.createLikeMessage = (req, res) => {
     const data = req.body;
     topicMessages.likeMessage(data, (err, results) => {
+        if (err){res.send(err);}
+        else{res.json(results);}
+    });
+};
+exports.deleteLikeMessage = (req, res) => {
+    const id = req.params.p_id;
+    const data = req.body;
+    topicMessages.unlikeMessage(data, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
     });
