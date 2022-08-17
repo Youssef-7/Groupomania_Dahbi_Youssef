@@ -145,21 +145,16 @@ exports.deleteMessageById = (id, result) => {
     })
 }
 
-// Moderation Message avec UPDATE
-exports.moderateMessage = (data, result) => {
-    connection.query("UPDATE post_messages  SET p_moderation = ? WHERE p_id = ?", [data.front_moderation, data.front_p_id], (err, results) => {
-        if (err) { console.log("error: ", err); result(err, null); }
-        else { result(null, results); }
-    });
-}
 
 // Creer un like 
 exports.likeMessage = (data, result) => {
-    connection.query( "INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?)",[data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
+    connection.query("SELECT * FROM like_message WHERE like_p_id = ? AND like_u_id = ?", [data.like_p_id, data.like_u_id],(err, results)=> {
+        if (!results) {
+    connection.query( "INSERT INTO like_message (like_u_id, like_p_id) VALUES (?, ?)",[data.like_u_id, data.like_p_id], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
-                else { connection.query("SELECT COUNT(*) FROM like_message WHERE like_p_id = like_p_id ", (err, results) => {
+                else { connection.query("SELECT COUNT(*) AS like_count FROM like_message WHERE like_p_id = ?", [data.like_p_id],  (err, results) => {
                         if (err) { console.log("error: ", err); result(err, null); }
-                            else { connection.query("UPDATE post_messages  SET p_like = ? WHERE p_id = ?", [data.p_like, data.p_id],(err, results) => {
+                            else { connection.query("UPDATE post_messages  SET p_like = ? WHERE p_id = ?", [results[0].like_count, data.like_p_id],(err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else { result(null, results); }
            // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
@@ -169,14 +164,16 @@ exports.likeMessage = (data, result) => {
         };
 
     });
+ }
+        else { result(null, results); }
+})
 }
-
 exports.unlikeMessage = (data, result) => {
-    connection.query( "DELETE FROM like_message WHERE like_id = ?"[id], (err, results) => {
+    connection.query( "DELETE FROM like_message WHERE like_p_id = ? AND like_u_id = ?",[data.like_p_id, data.like_u_id], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
-                else { connection.query("SELECT COUNT(*) FROM like_message WHERE like_p_id = like_p_id ", (err, results) => {
+                else { connection.query("SELECT COUNT(*) AS like_count FROM like_message WHERE like_p_id = ?", [data.like_p_id],(err, results) => {
                         if (err) { console.log("error: ", err); result(err, null); }
-                            else { connection.query("UPDATE post_messages  SET like = ? WHERE p_id = ?",[data.like, data.p_id],(err, results) => {
+                            else { connection.query("UPDATE post_messages  SET p_like = ? WHERE p_id = ?",[results[0].like_count, data.like_p_id],(err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
            // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
              })
@@ -185,6 +182,13 @@ exports.unlikeMessage = (data, result) => {
         };
 
     });
+}
+
+exports.deleteAllLikes = (data, result) => {
+    connection.query("DELETE FROM like_message WHERE like_p_id = ? ",[data.like_p_id],(err, results) => {
+        if (err) {console.log("error: ", err); result(err, null);}
+        else{ result(null, results[0]);}
+    })
 }
 // Get one topic
 // exports.getMessageByTitle = (title, result) => {
