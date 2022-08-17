@@ -58,6 +58,10 @@ exports.deleteMessage = (req, res) => {
         if (err){res.send(err);}
         else{res.json(results);}
     });
+    topicMessages.deleteAllLikes(id, (err, results) =>{
+        if (err){res.send(err);}
+        else{res.json(results);}
+    });
 };
 exports.createLikeMessage = (req, res) => {
     const data = req.body;
