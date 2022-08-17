@@ -190,25 +190,3 @@ exports.deleteAllLikes = (data, result) => {
         else{ result(null, results[0]);}
     })
 }
-// Get one topic
-// exports.getMessageByTitle = (title, result) => {
-//     connection.query("SELECT * FROM topic_messages WHERE tm_title = ?", [title], (err, results) => {
-//         if (err) { console.log("error: ", err); result(err, null); }
-//         else { result(null, results[0]); }
-//     });
-// }
-// Delete conversation
-// exports.deleteConversationByTitle = (title, result) => {
-//     connection.query("DELETE FROM topic_messages WHERE tm_title = ?", [title], (err, results) => {
-//         if (err) { console.log("error: ", err); result(err, null); }
-//         else { result(null, results[0]); }
-//     });
-// }
-// Récupérer les Messages d'un seul utilisateur
-// exports.userMessages = (id, result) => {
-//     connection.query("SELECT tm.*, u.u_pseudo FROM topic_messages tm INNER JOIN users u ON tm.tm_user_id = u.u_id WHERE u.u_id = ? ORDER BY tm.tm_id ASC", 
-//     [id.u_id], (err, results) => {
-//         if(err) {console.log("error: ", err); result(err, null);} 
-//         else {result(null, results);}
-//     });
-// }
