@@ -13,14 +13,7 @@ exports.createMessage = (req, res) => {
     });
 };
 
-exports.showChildTopicMessages = (req, res) => {
-    const parent_id = req.params.parent_id;
-    // console.log('hello world');
-    topicMessages.getChildMessages(parent_id, (err, results) => {
-        if (err){res.send(err);}
-        else{res.json(results);}
-    });
-};
+
 
 exports.showParentTopicMessages = (req, res) => {
     topicMessages.getParentMessages((err, results) => {
@@ -42,15 +35,6 @@ exports.updateMessage = (req, res) => {
     });
 };
 
-// Modérer un message : UPDATE moderation FROM 
-exports.updateModeration = (req, res) => {
-    const data = req.body;
-    topicMessages.moderateMessage(data, (err, results) => {
-        if (err){res.send(err);}
-        else{res.json(results);}
-    });
-};
-
 // Supprimer un message : DELETE Message from Database
 exports.deleteMessage = (req, res) => {
     const id = req.params.p_id;
@@ -64,7 +48,10 @@ exports.deleteMessage = (req, res) => {
     });
 };
 exports.createLikeMessage = (req, res) => {
-    const data = req.body;
+    const id = req.params.p_id;
+    const data = JSON.parse(req.body.topic);
+    data['like_p_id']= id;
+        console.log(data)
     topicMessages.likeMessage(data, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
@@ -72,8 +59,10 @@ exports.createLikeMessage = (req, res) => {
 };
 exports.deleteLikeMessage = (req, res) => {
     const id = req.params.p_id;
-    const data = req.body;
-    topicMessages.unlikeMessage(data, (err, results) => {
+    const data = JSON.parse(req.body.topic);
+    data['like_p_id']= id;
+        console.log(data)
+        topicMessages.unlikeMessage(data, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
     });
