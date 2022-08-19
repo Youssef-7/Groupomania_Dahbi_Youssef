@@ -26,13 +26,6 @@ exports.getParentMessages = (result) => {
     });
 }
 
-// Get Child Topics = trouver tous les messages dont le parent = 0
-exports.getChildMessages = (parent_id, result) => {
-    connection.query("SELECT p.*, u.u_pseudo FROM post_messages p INNER JOIN usagers u ON p.p_user_id = u.u_id WHERE p.p_parent = ? ORDER BY p_date_published", [front_parent], (err, results) => {
-        if (err) { console.log("error: ", err); result(err, null); }
-        else { result(null, results); }
-    });
-}
 
 // Update Topic_message to Database = modifier un message
 exports.updateMessage = (data, result) => {
@@ -144,12 +137,23 @@ exports.deleteMessageById = (id, result) => {
         }
     })
 }
+// exports.likeMessage = (data, result) => {
+//     connection.query("SELECT * FROM like_message WHERE like_p_id = ? AND like_u_id = ?", [data.like_p_id, data.like_u_id], (err, results) => {
+//         if (!results[0]) { 
+//             connection.query( "INSERT INTO like_message (like_u_id, like_p_id) VALUES (?, ?)",[data.like_u_id, data.like_p_id], (err, results) => {
+//                 if (err) { console.log("error: ", err); result(err, null); }
+//                 else { result(null, results); }
 
+//             })
+//         }
+//         else { result(null, results); }
+//     });
+// }
 
 // Creer un like 
 exports.likeMessage = (data, result) => {
     connection.query("SELECT * FROM like_message WHERE like_p_id = ? AND like_u_id = ?", [data.like_p_id, data.like_u_id],(err, results)=> {
-        if (!results) {
+        if (!results[0]) {
     connection.query( "INSERT INTO like_message (like_u_id, like_p_id) VALUES (?, ?)",[data.like_u_id, data.like_p_id], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
                 else { connection.query("SELECT COUNT(*) AS like_count FROM like_message WHERE like_p_id = ?", [data.like_p_id],  (err, results) => {
