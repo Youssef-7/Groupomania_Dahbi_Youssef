@@ -90,8 +90,11 @@
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
-           <input :value="user"  type="hidden" id="user " name="user " >
+          <input :value="user"  type="hidden" id="user " name="user " >
          <button v-if ="user == item.p_user_id && mode == 'modify'" v-on:click="modifPub(item.p_id)">modifier</button>
+         <button v-on:click="likePub(item.p_id)">liker</button>
+         <button v-on:click="dislikePub(item.p_id)">disliker</button>
+         <p>Nombre de like {{item.p_like}}</p>
        </div>
       </div>
       </div>
@@ -212,7 +215,61 @@ savePublication(e) {
     },
     readURL(e) {this.front_picture_url = e.target.files[0]},
 
+    likePub(p_id) {
+      const user_id = localStorage.getItem("userId");
+      const access_token = localStorage.getItem("access_token");
+      const data_i = new FormData();
+      const body = {
+          like_u_id: user_id,
+      };
+      data_i.append("topic", JSON.stringify(body));
+      console.log(body)
+      var config = {
+        method: "post",
+        url: "http://localhost:3000/api/topic_messages/like/"+ p_id,
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "multipart/form-data",
+        },
+        data: data_i,
+      };
+    axios(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          this.$router.go();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
 
+    dislikePub(p_id) {
+      const user_id = localStorage.getItem("userId");
+      const access_token = localStorage.getItem("access_token");
+      const data_i = new FormData();
+      const body = {
+          like_u_id: user_id,
+      };
+      data_i.append("topic", JSON.stringify(body));
+      console.log(body)
+      var config = {
+        method: "delete",
+        url: "http://localhost:3000/api/topic_messages/dislike/"+ p_id,
+        headers: {
+          Authorization: "Bearer " + access_token,
+          "Content-Type": "multipart/form-data",
+        },
+        data: data_i,
+      };
+    axios(config)
+        .then((response) => {
+          console.log(JSON.stringify(response.data));
+          this.$router.go();
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     deletePub(p_id)
     {
        axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
