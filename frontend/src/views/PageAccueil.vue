@@ -73,6 +73,7 @@
             <h1>{{ item.p_titre }}</h1>
             <p>{{ item.p_text }}</p>
             <p>{{item.p_id}}</p>
+            <select  v-model="front_p_user_id">{{item.p_user_id}}</select> 
           <div class="profilPublicationPostImg">
             <img :src="'http://localhost:3000/' + item.p_image_url" >
           </div>
@@ -88,7 +89,6 @@
          type="text">
           <input v-if ="user == item.p_user_id && mode == 'modify'" type="file"  @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
-          <input :value="item.p_user_id"  type="hidden" id="p_user_id " name="p_user_id " >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
           <input :value="user"  type="hidden" id="user " name="user " >
          <button v-if ="user == item.p_user_id && mode == 'modify'" v-on:click="modifPub(item.p_id)">modifier</button>
@@ -116,6 +116,7 @@ export default {
     return {
       items: [],
       p_id: "",
+      front_p_user_id:"",
       front_title: "",
       front_content: "",
       front_parent : 0,
@@ -185,10 +186,14 @@ savePublication(e) {
     },
     modifPub(p_id) {
       const access_token = localStorage.getItem("access_token");
+      
+      const role = localStorage.getItem("level");
       const data_image = new FormData();
       data_image.append("image", this.front_picture_url);
       console.log(data_image)
       const body = {
+          u_role: role,
+          
           p_titre: this.front_title,
           p_text: this.front_content,
           p_id: this.p_id,
@@ -270,12 +275,18 @@ savePublication(e) {
           console.log(error);
         });
     },
-    deletePub(p_id)
+deletePub(p_id)
     {
-       axios.delete('http://localhost:3000/api/topic_messages/'+ p_id).then((result)=>{
-            console.log(result)
-            this.getProducts();
-        })
+    const access_token = localStorage.getItem("access_token");
+        // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
+        // this.items = response.data;
+        // this.front_p_id = response.data.p_id;
+    var config = {
+      method: "delete",
+      url: 'http://localhost:3000/api/topic_messages/'+ p_id,
+      headers: { Authorization: "Bearer " + access_token },
+    };
+    axios(config);
     },
         deleteAccount()
     {
@@ -334,6 +345,9 @@ savePublication(e) {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 /*Menu deroulant*/
+.hidden{
+    display: none;
+}
 .container, input, button {
     font-family: 'Lato';
 }
