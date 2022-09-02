@@ -3,15 +3,25 @@ const jwt = require('jsonwebtoken'); // standard qui permet l'échange de jetons
 const dotenv = require("dotenv").config();
 const userData = require('../models/usersModel.js');
 const { createPool } = require('mysql2/promise');
-
+const passwordValidator = require('password-validator');
+var passwordParams = new passwordValidator();
+passwordParams
+.is().min(8)                                    // Minimum 8 caractères,                                 
+.has().uppercase()                              // Majuscule obligatoire,
+.has().lowercase()                              // Minuscule obligatoire,
+.has().digits(2)                                // 2 chiffres,
+.has().not().spaces();                         // Pas d'espaces
 // signup
 exports.signup = (req, res) => { // async = (req, res) => {
     try {
         const pseudo = req.body.front_pseudo;
         const email = req.body.front_email;
         const pwd = req.body.front_password;
-        if (!pseudo || !email || !pwd) { res.status(400).json(`${!pseudo ? "pseudo" : !email ? "email" : "pwd"} manquant`); }
-        else {
+        if (!passwordParams.validate(pwd)) {
+    res.status(400).json({ message: 'Veulliez renseigner un mot de pass valide avec au minimum : 8 caractères, une majuscule, une minuscule, 2 chiffre et sans espace'});
+  }     
+        if (!pseudo || !email || !pwd ) { res.status(400).json(`${!pseudo ? "pseudo" : !email ? "email" : "pwd"} manquant`); }
+        else if (passwordParams.validate(pwd)) {
             bcrypt.hash(req.body.front_password, 10)
             .then(hash => {
                 userData.insertUsers({
@@ -50,7 +60,7 @@ exports.login = async (req, res, next) => {
                     level: results[0].u_role,
                     userId: results[0].u_id,
                     token: jwt.sign (
-                        { userId: results[0].u_id },
+                        {userId: results[0].u_id, level: results[0].u_role },
                         `${process.env.SECRET_TOKEN_KEY}`, // clé secrète de l'encodage - en production : 'string' longue et aléatoire
                         { expiresIn: '24h' },
                         ),
@@ -65,37 +75,4 @@ exports.login = async (req, res, next) => {
         res.status(403).json({ error: 'requête non autorisée'});
     }
 };
-// exports.login = (req, res) => {
-//     try {
-//         const email = req.body.front_email;
-//         const pwd = req.body.front_password;
 
-//         if (email) {
-//             connection.query("SELECT * FROM users WHERE u_email = ?", [email], (err, results) => { 
-//                 if(err) {console.log("error: ", err);} 
-//                 else {
-//                     console.log('results: ', results);
-//                     const user = results[0];
-//                     console.log(user);
-//                     bcrypt.compare(pwd, user.u_password)
-//                     .then(valid => {
-//                         if (!valid) {
-//                             return res.status(401).json({error: "Mot de passe incorrect"});
-//                         }
-//                         res.status(200).json({ 
-//                             userId: user.u_id,
-//                             token: jwt.sign (
-//                                 { userId: user.u_id },
-//                                 'RANDOM_TOKEN_SECRET', // clé secrète de l'encodage - en production : 'string' longue et aléatoire
-//                                 { expiresIn: '24h' }
-//                             )
-//                         });
-//                     })
-//                     .catch(error => res.status(500).json({ error }));
-//                 }
-//             });
-//         } else {res.status(400).json(`${!email ? "email" : "pwd"} manquant`);}
-//     } catch (error) {
-//         res.status(403).json({ error: 'requête non autorisée'});
-//     }
-// }
