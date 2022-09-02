@@ -35,7 +35,7 @@ exports.verifUpdateMessage = (req, res) => {
 // Supprimer un message : DELETE Message from Database
 exports.deleteMessage = (req, res) => {
     const id = req.params.p_id;
-    topicMessages.deleteMessageById(data, (err, results) => {
+    topicMessages.deleteMessageById(id, (err, results) => {
         if (err){res.send(err);}
         else{topicMessages.deleteAllLikes(id, (err, results) =>{
         if (err){res.send(err);}
