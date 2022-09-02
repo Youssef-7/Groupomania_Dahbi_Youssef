@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken'); // package jsonwebtoken pour vérifier les tokens
 const dotenv = require("dotenv").config();
-module.exports = (req, res, next) => {   
+module.exports = (req, res, next) => {  
  // tryconsole.log(process.env) ...catch pour réduire les erreurs liés à tous les problèmes possibles
     try {
         const token = req.headers.authorization.split(' ')[1]; // on extrait le token du header authorization de la requête entrante (2e élément du tableau retourné avec le bearer et le token)
@@ -16,5 +16,3 @@ module.exports = (req, res, next) => {
         res.status(401).json({ error: error | 'requête non authentifiée'});
     }
 };
-
-// le middleware est ensuite appliqué à toutes les routes pour les protéger
