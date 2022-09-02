@@ -17,7 +17,7 @@
             </div>
             <div class="userButton dropdown" >
                 <button type="submit" class="profilButton boutonmenuprincipal">
-                <div class="imgProfilPublicationPart1" data-v-039c5b43=""><img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg" data-v-039c5b43=""></div>
+                <div class="imgProfilPublicationPart1" data-v-039c5b43=""><img src="https://img.freepik.com/vecteurs-libre/homme-affaires-caractere-avatar-isole_24877-60111.jpg?w=2000" data-v-039c5b43=""></div>
                 <fa icon ="chevron-down"/>
                 </button>
                 <div class="dropdown-child">
@@ -58,7 +58,7 @@
         <div class="flexPart2">
         <div class="flexPart1">
             <div class="imgProfilPublicationPart1">
-              <img src="https://fac.img.pmdstatic.net/fit/http.3A.2F.2Fprd2-bone-image.2Es3-website-eu-west-1.2Eamazonaws.2Ecom.2Fprismamedia_people.2F2017.2F12.2F07.2F4cff230b-512f-4b1d-abbb-90bf253fa9f2.2Ejpeg/345x258/quality/80/crop-from/center/chuck-norris.jpeg">
+              <img src="https://img.freepik.com/vecteurs-libre/homme-affaires-caractere-avatar-isole_24877-60111.jpg?w=2000">
             </div>
           <div class="profilPublicationPart1">
             <h2>{{ item.u_pseudo }}</h2>
@@ -81,10 +81,10 @@
          
           </div>
           <div v-if ="user == item.p_user_id">
-          <button v-if ="mode == 'normal'"  @click="modifyMode">Modifier la publication</button>
-          <button v-else  @click="normalMode">Quitter la modification</button>
+          <button  @click="modifyMode">Modifier la publication</button>
+          <button >Quitter la modification</button>
           </div>
-          <input v-if ="user == item.p_user_id && mode == 'modify'"  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
+          <input  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text" > 
           <input v-if ="user == item.p_user_id && mode == 'modify'" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
           <input v-if ="user == item.p_user_id && mode == 'modify'" type="file"  @change="readURL">
@@ -186,14 +186,14 @@ savePublication(e) {
     },
     modifPub(p_id) {
       const access_token = localStorage.getItem("access_token");
-      
-      const role = localStorage.getItem("level");
+      const user_id = localStorage.getItem("userId");
+      const role = localStorage.getItem("level")
       const data_image = new FormData();
       data_image.append("image", this.front_picture_url);
       console.log(data_image)
       const body = {
           u_role: role,
-          
+          u_id: user_id,
           p_titre: this.front_title,
           p_text: this.front_content,
           p_id: this.p_id,
@@ -270,6 +270,7 @@ savePublication(e) {
         .then((response) => {
           console.log(JSON.stringify(response.data));
           this.$router.go();
+          this.$router.go();
         })
         .catch(function (error) {
           console.log(error);
@@ -278,6 +279,12 @@ savePublication(e) {
 deletePub(p_id)
     {
     const access_token = localStorage.getItem("access_token");
+    const role = localStorage.getItem("level");
+    const data_i = new FormData();
+      const body = {
+          u_role: role,
+      };
+      data_i.append("topic", JSON.stringify(body));
         // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
         // this.items = response.data;
         // this.front_p_id = response.data.p_id;
@@ -285,8 +292,10 @@ deletePub(p_id)
       method: "delete",
       url: 'http://localhost:3000/api/topic_messages/'+ p_id,
       headers: { Authorization: "Bearer " + access_token },
+      data: data_i,
     };
     axios(config);
+    this.$router.go();
     },
         deleteAccount()
     {
@@ -590,6 +599,7 @@ form {
 .profilPublicationPost p{
     margin: 5px 10px;
     font-family: "calibri";
+    word-wrap: break-word;
 }
 .profilPublicationPostImg{
     margin-top: 20px;
