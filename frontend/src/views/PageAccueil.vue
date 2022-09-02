@@ -276,15 +276,30 @@ savePublication(e) {
           console.log(error);
         });
     },
+// deletePub(p_id)
+//     {
+//     const access_token = localStorage.getItem("access_token");
+//     const role = localStorage.getItem("level");
+//     const data_i = new FormData();
+//       const body = {
+//           u_role: role,
+//       };
+//       data_i.append("topic", JSON.stringify(body));
+//         // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
+//         // this.items = response.data;
+//         // this.front_p_id = response.data.p_id;
+//     var config = {
+//       method: "delete",
+//       url: 'http://localhost:3000/api/topic_messages/'+ p_id,
+//       headers: { Authorization: "Bearer " + access_token },
+//       data: data_i,
+//     };
+//     axios(config);
+//     this.$router.go();
+//     },
 deletePub(p_id)
     {
     const access_token = localStorage.getItem("access_token");
-    const role = localStorage.getItem("level");
-    const data_i = new FormData();
-      const body = {
-          u_role: role,
-      };
-      data_i.append("topic", JSON.stringify(body));
         // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
         // this.items = response.data;
         // this.front_p_id = response.data.p_id;
@@ -292,62 +307,15 @@ deletePub(p_id)
       method: "delete",
       url: 'http://localhost:3000/api/topic_messages/'+ p_id,
       headers: { Authorization: "Bearer " + access_token },
-      data: data_i,
     };
     axios(config);
     this.$router.go();
-    },
-        deleteAccount()
-    {
-       axios.delete('http://localhost:3000/api/users/'+ localStorage.getItem('userId')).then((result)=>{
-            console.log(result)
-            this.$router.push("/");
-        })
     },
     logout()
     {
         localStorage.clear();
         this.$router.push("/");
     },
-
-    // Create New publication
-    // async savePublication() {
-    //     console.log(this.front_picture_url)
-    //   try {
-    //     await axios.post("http://localhost:3000/api/topic_messages", {
-    //       p_titre: this.front_title,
-    //       p_text: this.front_content,
-    //       p_parent: this.front_parent,
-    //       p_image_url: this.front_picture_url,
-    //       p_user_id :localStorage.getItem("userId"),
-    //     });
-    //     this.front_title = "";
-    //     this.front_content = "";
-    //     this.front_parent = "";
-    //     this.front_user_id ="";
-    //     this.front_picture_url ="";
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
-    // async modifPub(p_id) {
-    //   try {
-    //     console.log(this.front_title+" "+ this.front_content + ""+ this.p_id)
-    //     await axios.put("http://localhost:3000/api/topic_messages/"+p_id, {
-    //       p_titre: this.front_title,
-    //       p_text: this.front_content,
-    //       p_image_url: this.front_picture_url,
-    //       p_id: this.p_id,
-    //     });
-    //     this.front_title = "";
-    //     this.front_content = "";
-    //     this.front_picture_url ="";
-    //     this.p_id="";
-    //     this.getProducts();
-    //   } catch (err) {
-    //     console.log(err);
-    //   }
-    // },
   },
 };
 </script>
