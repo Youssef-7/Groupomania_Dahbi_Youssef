@@ -1,11 +1,8 @@
-// les queries viennent ici
 // import connection
-
+const auth = require('../middleware/auth');
 const fs = require('fs');
 const connection = require("../config/database.js");
 const db_queries = require("../util/db_queries.js");
-// const { get_message_by_id, get_picture_url_by_id, delete_child_images_by_parent_id } = require('../util/db_queries.js');
-
 // Insert Topic_message to Database = création d'un message
 exports.insertTopicMessages = (data, result) => {
     connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url) VALUES (?, ?, ?, ?, ?)", [data.p_parent, data.p_user_id, data.p_titre, data.p_text, data.p_image_url], (err, results) => {
@@ -27,15 +24,12 @@ exports.getParentMessages = (result) => {
     });
 }
 exports.verifUpdate = (data, result) => {
-    if(data.u_role === 1) {updateMessage = (data, result)} else {
-        connection.query("SELECT p_user_id, u.u_id FROM post_messages p INNER JOIN usagers u ON p.p_user_id = u.u_id",[data.p_user_id, data.u_id], (err, results) => {
-            if (err) { console.log("error: ", err); result(err, null); } else {
-                updateMessage = (data, result)
-            }
+    if(data.u_role == '1') {this.updateMessage (data, result)} else {
+        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[data.u_id, data.p_id], (err, results) => {
+            if (results[0]) {this.updateMessage (data, result) }
         })
 
     }
-
 
 }
 
@@ -88,35 +82,6 @@ exports.updateMessage = (data, result) => {
     }
 }
 
-// Delete Message via id utilisateur
-exports.deleteTopicByUserId = (id, result) => {
-    db_queries.get_picture_url_by_tm_user_id(id, (err, results) => { // récupération de l'image selon l'id du message
-        // console.log(results); // URL de l'image parent si tm_parent = tm_id
-        if (err) { result(err, null); } // gestion de l'erreur
-        else { // gestion de la suppresion du message
-            // console.log(results);
-            if (results.length > 0) { // si on a une image : on obtient un tableau results contenant un objet dont on extrait l'url
-                try {
-                    for (let i = 0; i < results.length; i++) {
-                        const picture_url = results[i].p_image_url;
-                        // console.log("picture_url : ", picture_url);
-                        if (fs.existsSync(picture_url)) { // vérification de l'existence du fichier
-                            fs.unlinkSync(picture_url) //FileSystem : suppression des images/liens du "filesystem"
-                        }
-                    }
-                    connection.query("DELETE FROM post_messages WHERE p_user_id = ? ", [id], (err, results) => {
-                        if (err) { console.log("error: ", err); result(err, null); }
-                        else { result(null, results); }
-                    });
-                } catch (err) { // gestion de l'erreur
-                    result(err, null);
-                    console.error(err);
-                }   
-            }
-        }
-    })
-}
-
 // Delete Message from Database + gestion des fichiers images de la bdd
 exports.deleteMessageById = (id, result) => {
     db_queries.get_picture_url_by_tm_id(id, (err, results) => { // récupération de l'image selon l'id du message
@@ -149,19 +114,6 @@ exports.deleteMessageById = (id, result) => {
         }
     })
 }
-// exports.likeMessage = (data, result) => {
-//     connection.query("SELECT * FROM like_message WHERE like_p_id = ? AND like_u_id = ?", [data.like_p_id, data.like_u_id], (err, results) => {
-//         if (!results[0]) { 
-//             connection.query( "INSERT INTO like_message (like_u_id, like_p_id) VALUES (?, ?)",[data.like_u_id, data.like_p_id], (err, results) => {
-//                 if (err) { console.log("error: ", err); result(err, null); }
-//                 else { result(null, results); }
-
-//             })
-//         }
-//         else { result(null, results); }
-//     });
-// }
-
 // Creer un like 
 exports.likeMessage = (data, result) => {
     connection.query("SELECT * FROM like_message WHERE like_p_id = ? AND like_u_id = ?", [data.like_p_id, data.like_u_id],(err, results)=> {
