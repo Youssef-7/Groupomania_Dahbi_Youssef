@@ -66,7 +66,7 @@
           </div>
         </div>
           <div class="profilPublicationPart2">
-           <div v-if ="user == item.p_user_id" ><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
+           <div ><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
           </div>
         </div>
         <div class="profilPublicationPost">
@@ -80,18 +80,18 @@
           <div class="profilPublicationPostInter">
          
           </div>
-          <div v-if ="user == item.p_user_id">
+          <div  >
           <button  @click="modifyMode">Modifier la publication</button>
           <button >Quitter la modification</button>
           </div>
           <input  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text" > 
-          <input v-if ="user == item.p_user_id && mode == 'modify'" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
+          <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input v-if ="user == item.p_user_id && mode == 'modify'" type="file"  @change="readURL">
+          <input  type="file"  @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
           <input :value="user"  type="hidden" id="user " name="user " >
-         <button v-if ="user == item.p_user_id && mode == 'modify'" v-on:click="modifPub(item.p_id)">modifier</button>
+         <button  v-on:click="modifPub(item.p_id)">modifier</button>
          <button v-on:click="likePub(item.p_id)">liker</button>
          <button v-on:click="dislikePub(item.p_id)">disliker</button>
          <p>Nombre de like {{item.p_like}}</p>
@@ -186,14 +186,12 @@ savePublication(e) {
     },
     modifPub(p_id) {
       const access_token = localStorage.getItem("access_token");
-      const user_id = localStorage.getItem("userId");
-      const role = localStorage.getItem("level")
+
       const data_image = new FormData();
       data_image.append("image", this.front_picture_url);
       console.log(data_image)
       const body = {
-          u_role: role,
-          u_id: user_id,
+
           p_titre: this.front_title,
           p_text: this.front_content,
           p_id: this.p_id,
