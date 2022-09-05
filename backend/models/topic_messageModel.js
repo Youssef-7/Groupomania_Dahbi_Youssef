@@ -1,5 +1,4 @@
 // import connection
-const auth = require('../middleware/auth');
 const fs = require('fs');
 const connection = require("../config/database.js");
 const db_queries = require("../util/db_queries.js");
@@ -23,9 +22,11 @@ exports.getParentMessages = (result) => {
         else { result(null, results); }
     });
 }
-exports.verifUpdate = (data, result) => {
-    if(data.u_role == '1') {this.updateMessage (data, result)} else {
-        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[data.u_id, data.p_id], (err, results) => {
+exports.verifUpdate = (req, result) => {
+    const data = req.body.topic
+    console.log(req.auth)
+    if(req.auth.level == '1') {this.updateMessage (data, result)} else {
+        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[req.auth.userId, data.p_id], (err, results) => {
             if (results[0]) {this.updateMessage (data, result) }
         })
 
@@ -113,6 +114,17 @@ exports.deleteMessageById = (id, result) => {
             })
         }
     })
+}
+exports.verifDelete = (req, result) => {
+    console.log(req.auth)
+    const id = req.params.p_id
+    if(req.auth.level == '1') {this.deleteMessageById (id, result)} else {
+        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[req.auth.userId, data.p_id], (err, results) => {
+            if (results[0]) {this.deleteMessageById (id, result) }
+        })
+
+    }
+
 }
 // Creer un like 
 exports.likeMessage = (data, result) => {
