@@ -26,7 +26,8 @@ exports.verifUpdateMessage = (req, res) => {
     data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
     data['p_id']= id; 
     console.log( data)
-    topicMessages.verifUpdate(data, (err, results) => {
+    req.body.topic = data;
+    topicMessages.verifUpdate(req, (err, results) => {
         if (err){res.send(err);}
         else{res.json(results);}
     });
@@ -35,7 +36,7 @@ exports.verifUpdateMessage = (req, res) => {
 // Supprimer un message : DELETE Message from Database
 exports.deleteMessage = (req, res) => {
     const id = req.params.p_id;
-    topicMessages.deleteMessageById(id, (err, results) => {
+    topicMessages.verifDelete(req, (err, results) => {
         if (err){res.send(err);}
         else{topicMessages.deleteAllLikes(id, (err, results) =>{
         if (err){res.send(err);}
