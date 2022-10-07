@@ -11,13 +11,19 @@
                     <button id="btnConect" v-if = "mode == 'login'" @click="btnConect" >Se connecter</button>
                     <button v-else id="btnSignUp" @click="btnSignUp">Creer un compte</button>
                     <a v-if = "mode == 'create'" @click="connectAccount" href="#"><p>Se connecter</p></a>
-                    <a href="#"><p>Mot de passe oublié ?</p></a>
                     <a v-if = "mode == 'login'" @click="createAccount" href="#"><p>Creer un compte</p></a>
                     <div id="trait"></div>
-                    <router-link to="/PageAccueil">Page suivante</router-link>
                 </form>  
             </div>
         </div>
+<div class="bloc-modale" v-if="revele">
+    <div class="overlay" v-on:click="toggleModale"></div>
+
+    <div class="modale card">
+      <div v-on:click="toggleModale" class="btn-modale btn btn-danger">X</div>
+       <textarea v-model = "modaleContenu" readonly wrap="soft" ></textarea>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -26,6 +32,7 @@ export default {
   name: 'HelloWorld',
     data() {
     return {
+        revele: false,
       login:{
           front_password:"",
           front_pseudo: "", 
@@ -34,9 +41,13 @@ export default {
       front_pseudo :"",
       front_email : "",
       front_password: "",
+      modaleContenu:"",
     };
   },
  methods: {
+    toggleModale(){
+        this.revele=false
+    },
     connectAccount(){
         this.mode = "login";
     },
@@ -55,7 +66,12 @@ btnConect(){
                     this.$router.push("/PageAccueil");
                     
                     console.log(this.login)
-                });
+                }).catch( error=> { 
+                    this.modaleContenu = error.response.data
+                    this.revele = true
+                    
+                    console.log(error.response.data)
+                })
             },
 btnSignUp(){
         axios.post('http://localhost:3000/api/signup', this.login)
@@ -67,7 +83,10 @@ btnSignUp(){
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
                     console.log(this.login)
-                });
+                }).catch( error=> {
+                    this.modaleContenu = error.response.data
+                    this.revele = true
+                })
             }
     }
 }
@@ -75,6 +94,52 @@ btnSignUp(){
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/*modale*/
+.bloc-modale {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.overlay {
+  background: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.modale {
+  background: #f1f1f1;
+  color: #333;
+  padding: 50px;
+  position: fixed;
+  top: 30%;
+}
+
+.btn-modale {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  cursor: pointer;
+}
+textarea{
+ overflow: hidden;
+ width: 273px;
+ height: 73px;
+ resize: none;
+ border: none;
+ background-color: #dd4e4e;
+ color: wheat;
+ font-family: cursive;
+}
+/*modale*/
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 body{
     margin : 0px;
@@ -121,7 +186,6 @@ form p {
     color: #4E5166;
     margin-top: 7px;
     margin-bottom: 15px;
-    margin-left: 122px;
     font-weight: bold;
     font-style: italic;
 }
@@ -159,7 +223,6 @@ form p:hover{
     border: none;
     width: 250px;
     padding: 15px 10px;
-    margin: 10px 0px auto 18%; 
     border-radius: 8px;
     font-weight: bold;
     background-color:#FBEAA2;
