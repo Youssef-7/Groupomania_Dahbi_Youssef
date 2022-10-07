@@ -49,7 +49,6 @@
             </div>
           <div class="profilPublicationPart1">
             <h2>{{ item.u_pseudo }}</h2>
-            <p>07/11/2021</p>
           </div>
         </div>
           <div class="profilPublicationPart2">
