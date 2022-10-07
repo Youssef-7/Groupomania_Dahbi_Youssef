@@ -18,7 +18,7 @@ exports.signup = (req, res) => { // async = (req, res) => {
         const email = req.body.front_email;
         const pwd = req.body.front_password;
         if (!passwordParams.validate(pwd)) {
-    res.status(400).json({ message: 'Veulliez renseigner un mot de pass valide avec au minimum : 8 caractères, une majuscule, une minuscule, 2 chiffre et sans espace'});
+    res.status(400).json( 'Veulliez renseigner un mot de pass valide avec au minimum : 8 caractères, une majuscule, une minuscule, 2 chiffre et sans espace');
   }     
         if (!pseudo || !email || !pwd ) { res.status(400).json(`${!pseudo ? "pseudo" : !email ? "email" : "pwd"} manquant`); }
         else if (passwordParams.validate(pwd)) {
@@ -68,7 +68,7 @@ exports.login = async (req, res, next) => {
                 })
                 .catch(err => res.status(500).json({ err }));
             } catch (error) {
-                return res.status(404).json({error: "Utilisateur non trouvé"});
+                return res.status(404).json({error :"Utilisateur non trouvé"});
             }
         });
     } catch (error) {
