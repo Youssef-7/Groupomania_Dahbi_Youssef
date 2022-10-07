@@ -59,13 +59,3 @@ exports.delete_child_images_by_parent_id = (parent_id, callback) => {
         }
     });
 }
-
-// exports.getImageUrlByTmTitle = (tm_title, callback) => {
-//     connection.query('SELECT tm_picture FROM topic_messages WHERE tm_title = ?', [tm_title], (err, results) => {
-//         if (err) {
-//             callback(err, null);
-//         } else {
-//             callback(null, results);
-//         }
-//     })
-// }
