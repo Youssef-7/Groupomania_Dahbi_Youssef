@@ -6,8 +6,8 @@
             <div id="formBloc">
                 <form>
                     <input v-model = "login.front_pseudo" v-if = "mode == 'create'" placeholder="Pseudo">
-                    <input v-model = "login.front_email" placeholder="Adresse e-mail">
-                    <input v-model = "login.front_password" placeholder="Mot de passe">
+                    <input v-model = "login.front_email" placeholder="Adresse e-mail" type="email">
+                    <input v-model = "login.front_password" placeholder="Mot de passe" type="password">
                     <button id="btnConect" v-if = "mode == 'login'" @click="btnConect" >Se connecter</button>
                     <button v-else id="btnSignUp" @click="btnSignUp">Creer un compte</button>
                     <a v-if = "mode == 'create'" @click="connectAccount" href="#"><p>Se connecter</p></a>
@@ -64,7 +64,6 @@ btnConect(){
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
                     this.$router.push("/PageAccueil");
-                    
                     console.log(this.login)
                 }).catch( error=> { 
                     this.modaleContenu = error.response.data
@@ -83,6 +82,8 @@ btnSignUp(){
                     localStorage.setItem("userId", userId),
                     localStorage.setItem("level", level)
                     console.log(this.login)
+                    this.modaleContenu = response.data.message
+                    this.revele = true
                 }).catch( error=> {
                     this.modaleContenu = error.response.data
                     this.revele = true
