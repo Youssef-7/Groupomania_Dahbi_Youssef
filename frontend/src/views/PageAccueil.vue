@@ -7,27 +7,16 @@
             <div class="socialTitle">
                 <img src="../assets/icon-left-font.png">
             </div>
-            <div class="searchBar">
-              <div class="search">
-                <button type="submit" class="searchButton">
-                 <fa icon="search"/>
-                </button>
-                <input type="text" class="searchTerm" placeholder="Rechercher">
-            </div>
-            </div>
             <div class="userButton dropdown" >
                 <button type="submit" class="profilButton boutonmenuprincipal">
                 <div class="imgProfilPublicationPart1" data-v-039c5b43=""><img src="https://img.freepik.com/vecteurs-libre/homme-affaires-caractere-avatar-isole_24877-60111.jpg?w=2000" data-v-039c5b43=""></div>
                 <fa icon ="chevron-down"/>
                 </button>
                 <div class="dropdown-child">
-                 <a href="/books">Mon profil</a>
-                 <button @click="deleteAccount" >supprimer votre compte</button>
-                 <a href="#">
                   <form method="POST" action="/logout">
                     <button type="submit" class="btn btn-primary" @click="logout">Log out</button>
                 </form>
-                </a>
+
                 </div>  
             </div>   
         </div>
@@ -66,34 +55,32 @@
           </div>
         </div>
           <div class="profilPublicationPart2">
-           <div ><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
+           <div v-if ="user == item.p_user_id" ><button class="btn btn-danger delete" v-on:click="deletePub(item.p_id)">Delete</button>  </div>
           </div>
         </div>
-        <div class="profilPublicationPost">
+        <div class="profilPublicationPost" >
             <h1>{{ item.p_titre }}</h1>
             <p>{{ item.p_text }}</p>
-            <p>{{item.p_id}}</p>
-            <select  v-model="front_p_user_id">{{item.p_user_id}}</select> 
-          <div class="profilPublicationPostImg">
+          <div v-if="item.p_image_url" class="profilPublicationPostImg">
             <img :src="'http://localhost:3000/' + item.p_image_url" >
           </div>
           <div class="profilPublicationPostInter">
          
           </div>
-          <div  >
-          <button  @click="modifyMode">Modifier la publication</button>
-          <button >Quitter la modification</button>
+          <div v-if ="user == item.p_user_id">
+          <button v-if ="mode == 'normal'" class="btn modify" @click="modifyMode">Modifier la publication</button>
+          <button v-else class="btn LeaveModify" @click="normalMode">Quitter la modification</button>
           </div>
-          <input  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text" > 
-          <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
+          <input v-if ="user == item.p_user_id && mode == 'modify'"  v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text" > 
+          <input v-if ="user == item.p_user_id && mode == 'modify'" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
-          <input  type="file"  @change="readURL">
+          <input v-if ="user == item.p_user_id && mode == 'modify'"  type="file"  @change="readURL">
           <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
           <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
           <input :value="user"  type="hidden" id="user " name="user " >
-         <button  v-on:click="modifPub(item.p_id)">modifier</button>
-         <button v-on:click="likePub(item.p_id)">liker</button>
-         <button v-on:click="dislikePub(item.p_id)">disliker</button>
+         <button v-if ="user == item.p_user_id && mode == 'modify'" v-on:click="modifPub(item.p_id)" class="btnModifPub">modifier</button>
+         <button v-on:click="likePub(item.p_id)" class="btnLikePub">liker</button>
+         <button  v-on:click="dislikePub(item.p_id)" class="btnDislikePub">disliker</button>
          <p>Nombre de like {{item.p_like}}</p>
        </div>
       </div>
@@ -150,6 +137,7 @@ async getProducts() {
     };
     const response = await axios(config);
     this.items = response.data
+    console.log(this.items)
     },
 savePublication(e) {
       e.preventDefault();
@@ -274,33 +262,9 @@ savePublication(e) {
           console.log(error);
         });
     },
-// deletePub(p_id)
-//     {
-//     const access_token = localStorage.getItem("access_token");
-//     const role = localStorage.getItem("level");
-//     const data_i = new FormData();
-//       const body = {
-//           u_role: role,
-//       };
-//       data_i.append("topic", JSON.stringify(body));
-//         // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
-//         // this.items = response.data;
-//         // this.front_p_id = response.data.p_id;
-//     var config = {
-//       method: "delete",
-//       url: 'http://localhost:3000/api/topic_messages/'+ p_id,
-//       headers: { Authorization: "Bearer " + access_token },
-//       data: data_i,
-//     };
-//     axios(config);
-//     this.$router.go();
-//     },
 deletePub(p_id)
     {
     const access_token = localStorage.getItem("access_token");
-        // const response = await axios.get("http://localhost:3000/api/topic_messages/parent");
-        // this.items = response.data;
-        // this.front_p_id = response.data.p_id;
     var config = {
       method: "delete",
       url: 'http://localhost:3000/api/topic_messages/'+ p_id,
@@ -326,21 +290,17 @@ deletePub(p_id)
 .container, input, button {
     font-family: 'Lato';
 }
-
 .profilButton{
     float: right;
     padding: 0 10px;
     border: none;
 }
-
 .boutonmenuprincipal {
 background-color: white;
 border: none;
 cursor: pointer;
 
-
 }
-
 .dropdown {
 margin-left: 100px;
 display: inline-block;
@@ -371,6 +331,7 @@ a{
 text-decoration: none; }
 .navBar{
     display: flex;
+    justify-content: space-between;
     width: 100%;
     background-color: white;
     box-shadow: 1px 8px 5px -9px rgba(0,0,0,0.39);
@@ -621,24 +582,50 @@ form {
     }
 }
 .publication{width: 80%;}
+/*...............btn---style--------------------*/
+
+.delete{
+    cursor: pointer;
+    background-color: #ed3535;
+    color: white;
+    border-radius: 20px;
+    font-family: cursive;
+    border: none;
+}
+.modify{
+    border: none;
+    background-color: #4E5166;
+    font-family: cursive;
+    color: wheat;
+}
+.LeaveModify{
+    border: none;
+    background-color: #4E5166;
+    font-family: cursive;
+    color: azure;
+}
+.btnModifPub{
+    font-family: cursive;
+    background-color: #4dc164;
+    border: none;
+    color: white;
+    cursor: pointer;
+
+}
+.btnLikePub{
+    font-family: cursive;
+    background-color: #56b1d9;
+    border: none;
+    color: white;
+    cursor: pointer;
+
+}
+.btnDislikePub{
+    font-family: cursive;
+    background-color: #d50c6d;
+    border: none;
+    color: white;
+    cursor: pointer;
+
+}
 </style>
-<!-- async savePublication() {
-        const body ={
-            p_titre:this.front_title,
-            p_text:this.front_content,
-            p_parent:this.front_parent,
-            p_user_id: this.front_user_id
-        }
-            data.append("topic", JSON.stringify(body))
-      try {
-        await axios.post("http://localhost:3000/api/topic_messages",topic)
-        this.front_title = "";
-        this.front_content = "";
-        this.front_parent = "";
-        this.front_user_id ="";
-      } catch (err) {
-        console.log(err);
-      }
-    },
-  },
-}; -->
