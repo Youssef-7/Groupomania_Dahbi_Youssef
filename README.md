@@ -18,7 +18,7 @@ npm install
 nodemon server
 
 Base de données
-fichier Mysql (db_p7.sql) present dans le depot git à importer dans la base de donnée.
+fichier Mysql (db_p7.sql) present dans le depot git à importer dans votre base de donnée.
 
 Utilisation
 
