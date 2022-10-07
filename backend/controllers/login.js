@@ -12,7 +12,7 @@ passwordParams
 .has().digits(2)                                // 2 chiffres,
 .has().not().spaces();                         // Pas d'espaces
 
-var validation_email = (valeur) => {
+var validationEmail = (valeur) => {
 return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/.test(valeur);
 }
 // signup
@@ -21,7 +21,7 @@ exports.signup = (req, res) => { // async = (req, res) => {
         const pseudo = req.body.front_pseudo;
         const email = req.body.front_email;
         const pwd = req.body.front_password;
-        if (validation_email(email) == false) {
+        if (validationEmail(email) == false) {
            res.status(400).json( 'Veulliez renseigner un email valide');
         }
         if (!passwordParams.validate(pwd)) {
