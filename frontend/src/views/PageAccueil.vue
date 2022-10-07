@@ -28,8 +28,6 @@
         <form>
           <input v-model="front_title" name="front_title" class="createPost"  placeholder="Titre de la publication" type="text">
           <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
-          <input v-model="front_parent" type="hidden" id="p_parent" name="front_parent"  >
-          <input v-model="front_user_id" type="hidden" id="p_user_id" name="front_user_id" >
           <input @change="readURL"  type="file" >
         <div class="sendPics">
           <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
@@ -65,7 +63,6 @@
             <img :src="'http://localhost:3000/' + item.p_image_url" >
           </div>
           <div class="profilPublicationPostInter">
-         
           </div>
           <div v-if ="user == item.p_user_id || level == '1'">
           <button v-if ="mode == 'normal'" class="btn modify" @click="modifyMode">Modifier la publication</button>
@@ -75,11 +72,8 @@
           <input v-if ="user == item.p_user_id && mode == 'modify'|| level == '1' && mode == 'modify'" v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?"
          type="text">
           <input v-if ="user == item.p_user_id && mode == 'modify'|| level == '1' && mode == 'modify' "  type="file"  @change="readURL">
-          <input :value="item.p_id"  type="hidden" id="p_id" name="p_id" >
-          <input :value="front_user_id"  type="hidden" id="front_user_id " name="front_user_id " >
-          <input :value="user"  type="hidden" id="user " name="user " >
          <button v-if ="user == item.p_user_id || level === '1' && mode == 'modify'" v-on:click="modifPub(item.p_id)" class="btnModifPub">modifier</button>
-         <button v-on:click="likePub(item.p_id)" class="btnLikePub">liker</button>
+         <button  v-on:click="likePub(item.p_id)" class="btnLikePub">liker</button>
          <button  v-on:click="dislikePub(item.p_id)" class="btnDislikePub">disliker</button>
          <p>Nombre de like {{item.p_like}}</p>
        </div>
