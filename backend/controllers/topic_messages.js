@@ -6,6 +6,9 @@ exports.createMessage = (req, res) => {
     const data = JSON.parse(req.body.topic);
  // JSON.parse(req.body.message)
     console.log(data)
+    if (data.p_titre == ''|| data.p_text == '') {
+        return
+    }
     data['p_image_url'] = req.hasOwnProperty('file') ? req.file.path : null;
     topicMessages.insertTopicMessages(data, (err, results) => {
         if (err){res.send(err);} 
@@ -23,6 +26,9 @@ exports.showParentTopicMessages = (req, res) => {
 exports.verifUpdateMessage = (req, res) => {
     const id = req.params.p_id;
     const data = JSON.parse(req.body.topic) // JSON.parse(req.body.message)
+    if (data.p_titre == ''|| data.p_text == '') {
+        return
+    }
     data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
     data['p_id']= id; 
     console.log( data)
