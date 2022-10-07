@@ -5,6 +5,7 @@ Framework = VueJs
 Backend = NodeJs + express + Mysql
 
 Frontend
+
 -npm install
 
 -npm run serve 
@@ -13,6 +14,7 @@ http://localhost:8080/
 Backend
 
 npm install
+
 nodemon server
 
 Base de données
