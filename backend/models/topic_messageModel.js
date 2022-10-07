@@ -119,7 +119,7 @@ exports.verifDelete = (req, result) => {
     console.log(req.auth)
     const id = req.params.p_id
     if(req.auth.level == '1') {this.deleteMessageById (id, result)} else {
-        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[req.auth.userId, data.p_id], (err, results) => {
+        connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[req.auth.userId, id], (err, results) => {
             if (results[0]) {this.deleteMessageById (id, result) }
         })
 
@@ -137,7 +137,6 @@ exports.likeMessage = (data, result) => {
                             else { connection.query("UPDATE post_messages  SET p_like = ? WHERE p_id = ?", [results[0].like_count, data.like_p_id],(err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else { result(null, results); }
-           // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
              })
             };
         });
@@ -165,8 +164,8 @@ exports.unlikeMessage = (data, result) => {
     });
 }
 
-exports.deleteAllLikes = (data, result) => {
-    connection.query("DELETE FROM like_message WHERE like_p_id = ? ",[data.like_p_id],(err, results) => {
+exports.deleteAllLikes = (p_id, result) => {
+    connection.query("DELETE FROM like_message WHERE like_p_id = ? ",[p_id],(err, results) => {
         if (err) {console.log("error: ", err); result(err, null);}
         else{ result(null, results[0]);}
     })
