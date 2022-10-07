@@ -11,12 +11,19 @@ passwordParams
 .has().lowercase()                              // Minuscule obligatoire,
 .has().digits(2)                                // 2 chiffres,
 .has().not().spaces();                         // Pas d'espaces
+
+var validation_email = (valeur) => {
+return /^[\w-\.]+@([\w-]+\.)+[\w-]{2,6}$/.test(valeur);
+}
 // signup
 exports.signup = (req, res) => { // async = (req, res) => {
     try {
         const pseudo = req.body.front_pseudo;
         const email = req.body.front_email;
         const pwd = req.body.front_password;
+        if (validation_email(email) == false) {
+           res.status(400).json( 'Veulliez renseigner un email valide');
+        }
         if (!passwordParams.validate(pwd)) {
     res.status(400).json( 'Veulliez renseigner un mot de pass valide avec au minimum : 8 caractères, une majuscule, une minuscule, 2 chiffre et sans espace');
   }     
@@ -28,10 +35,10 @@ exports.signup = (req, res) => { // async = (req, res) => {
                     u_pseudo: req.body.front_pseudo, // requiert le pseudo du corps de la requête
                     u_email: req.body.front_email, // adresse email du corps de la requête
                     u_password: hash // le mot de passe est stocké crypté
-                    // date et id générés automatiquement et level default = 
+                     // date et id générés automatiquement et level default = 
                 },(err, results) => {
                     if(err) res.status(500).json({err})
-                    else res.status(201).json('Utilisateur créé');
+                    else res.status(201).json({message :'Utilisateur créé ! Veuillez vous connectez'});
                 });               
             })
             .catch(error => res.status(500).json({ error }));
@@ -43,10 +50,11 @@ exports.signup = (req, res) => { // async = (req, res) => {
 
 // login
 exports.login = async (req, res, next) => {
+
     try {
         const email = req.body.front_email;
         const pwd = req.body.front_password;
-        if (!email || !pwd) { res.status(400).json(`${!email ? "email" : "pwd"} manquant`); }
+        if (email == '' || pwd == '') { return res.status(401).json("Champs vide !") }
         
         userData.getUserByEmail(email, (err, results) => {
             try {
@@ -54,7 +62,7 @@ exports.login = async (req, res, next) => {
                 bcrypt.compare(pwd, u_pwd)
                 .then(valid => {
                 if (!valid) {
-                    return res.status(401).json({error: "Mot de passe incorrect"});
+                    return res.status(401).json("Mot de passe incorrect");
                 }
                 res.status(200).json({ 
                     level: results[0].u_role,
@@ -68,7 +76,7 @@ exports.login = async (req, res, next) => {
                 })
                 .catch(err => res.status(500).json({ err }));
             } catch (error) {
-                return res.status(404).json({error :"Utilisateur non trouvé"});
+                return res.status(404).json("Utilisateur non trouvé");
             }
         });
     } catch (error) {
