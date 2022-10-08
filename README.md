@@ -3,7 +3,7 @@ Projet 7 - Groupomania
 
 Framework = VueJs
 
-Backend :NodeJs + express + Mysql
+Backend = NodeJs + express + Mysql
 
 Frontend
 
