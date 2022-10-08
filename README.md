@@ -1,8 +1,7 @@
 Projet 7 - Groupomania
 
 
-Framework = VueJs 
-Backend = NodeJs + express + Mysql
+Framework = NodeJs + express + Mysql
 
 Frontend
 
