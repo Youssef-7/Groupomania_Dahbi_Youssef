@@ -160,10 +160,10 @@ text-decoration: none; }
     font-family: 'Lato';
 }
 .blocMedia{
- width: 700px;
- margin: 200px auto;
- display: flex;
- justify-content: space-between;
+    width: 700px;
+    margin: 200px auto;
+    display: flex;
+    justify-content: space-between;
 }
 .socialTitle {
     margin-right: 30px;
