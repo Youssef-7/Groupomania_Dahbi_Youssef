@@ -1,6 +1,4 @@
 const topicMessages = require("../models/topic_messageModel.js");
-// faire un require de auth , lutiliser dans le model pour comparer
-// Créer un message (parent 0) : INSERT Topic_message to Database
 exports.createMessage = (req, res) => {
 
     const data = JSON.parse(req.body.topic);
@@ -31,7 +29,7 @@ exports.verifUpdateMessage = (req, res) => {
     }
     data['p_image_url']= req.hasOwnProperty('file') ? req.file.path : null;
     data['p_id']= id; 
-    console.log( data)
+    console.log( req.body.topic)
     req.body.topic = data;
     topicMessages.verifUpdate(req, (err, results) => {
         if (err){res.send(err);}
