@@ -6,12 +6,7 @@ const db_queries = require("../util/db_queries.js");
 exports.insertTopicMessages = (data, result) => {
     connection.query("INSERT INTO post_messages (p_parent, p_user_id, p_titre, p_text, p_image_url) VALUES (?, ?, ?, ?, ?)", [data.p_parent, data.p_user_id, data.p_titre, data.p_text, data.p_image_url], (err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
-        else {
-            db_queries.get_message_by_id(results.insertId, (err, res) => {
-                if (err) { result(err, null); }
-                else { result(null, res); }
-            })
-        }
+                else { result(null, results); }
     });
 }
 
@@ -24,7 +19,7 @@ exports.getParentMessages = (result) => {
 }
 exports.verifUpdate = (req, result) => {
     const data = req.body.topic
-    console.log(req.auth)
+    console.log(data)
     if(req.auth.level == '1') {this.updateMessage (data, result)} else {
         connection.query("SELECT * from post_messages WHERE p_user_id = ? AND p_id = ?",[req.auth.userId, data.p_id], (err, results) => {
             if (results[0]) {this.updateMessage (data, result) }
@@ -100,18 +95,11 @@ exports.deleteMessageById = (id, result) => {
                     console.error(err);
                 }
             }
-            // et suppression de l'image de(s) l'élément(s) enfant(s) puis du(des) message(s) enfant(s)
-            db_queries.delete_child_images_by_parent_id(id, (err, results) => { // gestion de la suppression des images de l'enfant
-                if (err) {
-                    result(err, null);
-                } else {
-                    // une fois l'image supprimée, suppresion de la table topic_message des lignes dont l'id = tm_parent ou tm_id
+                    // une fois l'image supprimée, suppresion de la table topic_message des lignes dont l'id = p_parent ou p_id
                     connection.query("DELETE FROM post_messages WHERE p_parent = ? or p_id = ? ", [id, id], (err, results) => {
                         if (err) { console.log("error: ", err); result(err, null); }
                         else { result(null, results); }
                     });
-                }
-            })
         }
     })
 }
@@ -155,7 +143,6 @@ exports.unlikeMessage = (data, result) => {
                             else { connection.query("UPDATE post_messages  SET p_like = ? WHERE p_id = ?",[results[0].like_count, data.like_p_id],(err, results) => {
         if (err) { console.log("error: ", err); result(err, null); }
         else { result(null, results); }
-           // metttre a jour la table de liasion, compte le nombre de like (select count where postid = post id, update "UPDATE post_messages  SET like = ? WHERE p_id = ?", + route like et route dislike if (data.like) {connection.query("INSERT INTO like_message (like_u_id, like_p_user_id, like_p_id) VALUES (?, ?, ?, ?);", [data.like_u_id, data.like_p_user_id, data.like_p_id], (err, results) => {
              })
             };
         });
