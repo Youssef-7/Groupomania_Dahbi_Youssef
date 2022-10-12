@@ -5,11 +5,11 @@
           <nav>
              <div class="navBar">
                 <div class="socialTitle">
-                    <img src="../assets/icon-left-font.png">
+                    <img src="../assets/icon-left-font.png" alt="logo"> 
                 </div>
                 <div class="userButton dropdown" >
                     <button type="submit" class="profilButton boutonmenuprincipal">
-                        <div class="imgProfilPublicationPart1" data-v-039c5b43=""><img src="https://img.freepik.com/vecteurs-libre/homme-affaires-caractere-avatar-isole_24877-60111.jpg?w=2000" data-v-039c5b43=""></div>
+                        <div class="imgProfilPublicationPart1" data-v-039c5b43=""><img src="../assets/avatar.png" alt="avatar"></div>
                         <fa icon ="chevron-down"/>
                     </button>
                     <div class="dropdown-child">
@@ -30,7 +30,6 @@
       <input v-model="front_content" name="front_content" class="createPost" placeholder="Quoi de neuf ?" type="text">
       <input @change="readURL"  type="file" >
       <div class="sendPics">
-          <!-- <i class="far fa-images"></i>  -->   <!-- a modifier -->
       </div>
       <div class="send">
         <button @click="savePublication" type="submit" class="sendPublication" value="Add"> Envoyer </button>
@@ -45,7 +44,7 @@
             <div class="flexPart2">
                 <div class="flexPart1">
                     <div class="imgProfilPublicationPart1">
-                      <img src="https://img.freepik.com/vecteurs-libre/homme-affaires-caractere-avatar-isole_24877-60111.jpg?w=2000">
+                      <img src="../assets/avatar.png" alt="avatar">
                   </div>
                   <div class="profilPublicationPart1">
                     <h2>{{ item.u_pseudo }}</h2>
