@@ -268,11 +268,8 @@ logout(){
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 /*Menu deroulant*/
-.hidden{
-display: none;
-}
 .container, input, button {
-font-family: 'Lato';
+font-family: 'Lato','sans-serif', 'cursive';
 }
 .profilButton{
 float: right;
@@ -425,7 +422,6 @@ width: 50%;
 margin-top: 20px;
 width: 100%;
 height: 20%;
-font-family: 'calibri';
 border-radius: 10px;
 background-color: white;
 border-bottom: 1px solid #D3D0D0;
@@ -467,7 +463,6 @@ min-width: 10%;
 .profilPublicationPart1 h1,p{
 margin-top: 0;
 margin-bottom: 0;
-font-family: "calibri";
 }
 .profilPublicationPart1 h2{
 margin: 0px;
@@ -486,7 +481,6 @@ height: 50px;
 }
 .profilPublicationPost p{
 margin: 5px 10px;
-font-family: "calibri";
 word-wrap: break-word;
 }
 .profilPublicationPostImg{
@@ -511,7 +505,6 @@ margin-left: 40%;
 }
 .profilPublicationPostInterDivLike{
 display: flex;
-font-family: "calibri";
 }
 .commentZone{
 display: flex;
@@ -548,37 +541,31 @@ cursor: pointer;
 background-color: #ed3535;
 color: white;
 border-radius: 20px;
-font-family: cursive;
 border: none;
 }
 .modify{
 border: none;
 background-color: #4E5166;
-font-family: cursive;
 color: wheat;
 }
 .LeaveModify{
 border: none;
 background-color: #4E5166;
-font-family: cursive;
 color: azure;
 }
 .btnModifPub{
-font-family: cursive;
 background-color: #4dc164;
 border: none;
 color: white;
 cursor: pointer;
 }
 .btnLikePub{
-font-family: cursive;
 background-color: #56b1d9;
 border: none;
 color: white;
 cursor: pointer;
 }
 .btnDislikePub{
-font-family: cursive;
 background-color: #d50c6d;
 border: none;
 color: white;
