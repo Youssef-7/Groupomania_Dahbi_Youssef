@@ -17,8 +17,8 @@
             </div>
         </div>
 <div class="bloc-modale" v-if="revele">
-    <div class="overlay" v-on:click="toggleModale"></div>
-
+    <div class="overlay" v-on:click="toggleModale">
+    </div>
     <div class="modale card">
       <div v-on:click="toggleModale" class="btn-modale btn btn-danger">X</div>
        <textarea v-model = "modaleContenu" readonly wrap="soft" ></textarea>
@@ -96,6 +96,10 @@ btnSignUp(){
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 /*modale*/
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
+.blocMedia, input, button, .bloc-modale {
+    font-family: 'Lato', 'sans-serif', 'cursive';
+}
 .bloc-modale {
   position: fixed;
   top: 0;
@@ -138,10 +142,8 @@ textarea{
  border: none;
  background-color: #dd4e4e;
  color: wheat;
- font-family: cursive;
 }
 /*modale*/
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap');
 body{
     margin : 0px;
     padding: 0px;
@@ -155,9 +157,6 @@ text-decoration: none; }
 .bgImage{
     background: url(../assets/logo.png);
     position: relative;
-}
-.blocMedia, input, button {
-    font-family: 'Lato';
 }
 .blocMedia{
     width: 700px;
@@ -194,7 +193,6 @@ form p:hover{
     text-decoration: underline;
     cursor: pointer;
 }
-
 #trait{
     height: 1px;
     opacity: 0.5;
